@@ -1,5 +1,8 @@
 <template>
   <div id="wave">
+    <div class="down">
+      <i class="el-icon-arrow-down" @click="down"></i>
+    </div>
     <div id="wave1">
       <img src="../../assets/img/wave1.png">
     </div>
@@ -12,6 +15,16 @@
 <script>
   export default {
     name: "Wave",
+    methods: {
+      down() {
+        const height = document.documentElement.clientHeight
+        window.scrollTo({
+          left: 0,
+          top: height,
+          behavior: 'smooth'
+        })
+      }
+    },
     mounted() {
       const wave = document.getElementById('wave')
 
@@ -37,13 +50,45 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   #wave {
     position: absolute;
     height: 100px;
     left: 0;
     right: 0;
     width: 100%;
+    overflow-x: hidden;
+  }
+
+  @keyframes updown {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  #wave div.down {
+    font-size: 50px;
+    font-weight: bolder;
+    color: white;
+    position: absolute;
+    top: -20px;
+    z-index: 100;
+    width: 100%;
+    text-align: center;
+
+    i {
+      animation: 1.5s linear updown infinite;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   #wave1, #wave2{

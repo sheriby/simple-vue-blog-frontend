@@ -6,8 +6,15 @@ import router from '@/router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
-
 Vue.config.productionTip = false
+
+import POWERMODE from 'activate-power-mode'
+POWERMODE.colorful = true
+POWERMODE.shake = false
+document.addEventListener('input', POWERMODE)
+
+import Highlight from '@/utils/highlight'
+Vue.use(Highlight)
 
 new Vue({
   render: h => h(App),

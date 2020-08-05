@@ -26,7 +26,11 @@
     components: {
       BlogFooter,
       Discovery,
-      Cover, Avatar, Wave, Welcome, Dash
+      Cover,
+      Avatar,
+      Wave,
+      Welcome,
+      Dash
     }
   }
 </script>

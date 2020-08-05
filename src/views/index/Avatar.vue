@@ -66,6 +66,7 @@
     height: 130px;
     width: 130px;
     border-radius: 50%;
+    border: rgba(0, 0, 0, 0.3) 5px solid;
 
     transition: 1s ease-in-out;
     -webkit-transition: 1s ease-in-out;
@@ -90,6 +91,14 @@
   #avatar-img img:hover {
     transform: rotate(360deg);
     -webkit-transform: rotate(360deg);
+  }
+
+  i.el-icon-arrow-left,
+  i.el-icon-arrow-right {
+    color: deepskyblue;
+    font-size: 20px;
+    font-weight: bolder;
+    margin: 0 5px;
   }
 
 
