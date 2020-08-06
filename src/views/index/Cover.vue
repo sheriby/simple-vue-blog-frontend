@@ -20,7 +20,7 @@
       const h = document.documentElement.clientHeight
       this.coverStyle.height = h + 'px'
 
-      window.onresize = () => {
+      window.addEventListener('resize', () => {
         if (timer) {
           clearInterval(timer)
         }
@@ -28,7 +28,7 @@
           const h = document.documentElement.clientHeight
           this.coverStyle.height = h + 'px'
         }, 300)
-      }
+      })
     }
   }
 </script>

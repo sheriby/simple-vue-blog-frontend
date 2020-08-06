@@ -1,16 +1,33 @@
 <template>
   <div id="blog">
     <blog-cover :title="title" :date="date" :view="view" :cover="cover"/>
-    <blog-content :content="content"/>
+    <div class="container">
+        <blog-content :content="content"/>
+
+        <el-row><el-col :span="20">
+          <div class="b-container">
+            <blog-donate/>
+            <license/>
+            <blog-post :previous="previous" :next="next"/>
+            <blog-comment :comments="comments"/>
+            <detail-footer/>
+          </div>
+        </el-col></el-row>
+    </div>
   </div>
 </template>
 
 <script>
   import BlogCover from '@/views/blog/BlogCover'
   import BlogContent from '@/views/blog/BlogContent'
+  import BlogDonate from '@/components/donate/BlogDonate'
+  import License from '@/components/License/License'
+  import BlogPost from '@/views/blog/BlogPost'
+  import BlogComment from '@/views/blog/BlogComment'
+  import DetailFooter from '@/components/footer/DetailFooter'
   export default {
     name: "Blog",
-    components: {BlogContent, BlogCover},
+    components: {DetailFooter, BlogComment, BlogPost, License, BlogDonate, BlogContent, BlogCover},
     data() {
       return {
         cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
@@ -255,7 +272,47 @@ public class MapperTest {
 }
 </code></pre>
 <p>需要添加上面的两个测试用的注解，测试用的组件直接注入就好了。</p>
-<p>至此我们就将<code>Taco Cloud</code>的持久化层技术换成了<code>MyBatis</code>，简洁了不少呢。</p>`
+<p>至此我们就将<code>Taco Cloud</code>的持久化层技术换成了<code>MyBatis</code>，简洁了不少呢。</p>`,
+        previous: {
+          title: 'Bootstrap栅格布局Less源码分析(i)',
+          cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/11.jpg',
+        },
+        next: {
+          title: 'Less的基本使用(ii)',
+          cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/12.png',
+        },
+        comments: [
+          {
+            name: 'Sheriby',
+            qq: 1970734379,
+            content: 'Comment Test',
+            date: '2020-08-06 15:06',
+            reply: [
+              {
+                name: 'Hony',
+                qq: 422343831,
+                date: '2020-08-06 13:26',
+                content: 'Reply Test',
+                at: 'Sheriby'
+              }
+            ]
+          },
+          {
+            name: 'Sheriby',
+            qq: 1970734379,
+            date: '2020-08-06 15:06',
+            content: 'Comment Test',
+            reply: [
+              {
+                name: 'Hony',
+                qq: 422343831,
+                date: '2020-08-06 13:26',
+                content: 'Reply Test',
+                at: 'Someone'
+              }
+            ]
+          },
+        ]
       }
     }
   }
@@ -263,9 +320,18 @@ public class MapperTest {
 
 <style lang="less" scoped>
 
+  div.br {
+    height: 400px;
+  }
+
   div#blog {
     margin-top: 61px;
     height: 1000px;
+  }
+
+  div.container {
+    padding-left: 200px;
+    padding-right: 100px;
   }
 
 </style>

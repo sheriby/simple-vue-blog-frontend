@@ -11,6 +11,7 @@ Vue.config.productionTip = false
 import POWERMODE from 'activate-power-mode'
 POWERMODE.colorful = true
 POWERMODE.shake = false
+// console.log(POWERMODE.colorful, POWERMODE.shake)
 document.addEventListener('input', POWERMODE)
 
 import Highlight from '@/utils/highlight'

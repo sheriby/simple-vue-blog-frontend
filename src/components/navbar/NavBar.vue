@@ -158,7 +158,7 @@
 
         let timer = null
 
-        window.onscroll = () => {
+        window.addEventListener('scroll', () => {
           if (timer) {
             clearInterval(timer)
           }
@@ -170,7 +170,7 @@
               over()
             }
           }, 100)
-        }
+        })
 
       }
     }

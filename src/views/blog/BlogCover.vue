@@ -42,7 +42,7 @@
     line-height: 1.4;
 
     padding-top: 250px;
-    padding-left: 250px;
+    padding-left: 200px;
 
     div.desc {
       text-shadow: rgba(0, 0, 0) 2px 2px 10px;

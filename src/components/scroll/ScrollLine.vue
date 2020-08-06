@@ -29,19 +29,19 @@
       line.style.top = -(height + 10) + 'px'
 
       let timer = null
-      window.onscroll = () => {
+      window.addEventListener('scroll', () => {
         if (timer) {
           clearInterval(timer)
         }
         timer = setTimeout(() => {
           const h = document.documentElement.scrollTop
-          if (h  !== 0) {
+          if (h !== 0) {
             line.style.top = '0'
           } else {
             line.style.top = -(height + 10) + 'px'
           }
         }, 100)
-      }
+      })
     }
   }
 </script>
@@ -66,6 +66,7 @@
 
     height: 700px;
     width: 40px;
+    z-index: 9;
 
     img {
       height: 100%;

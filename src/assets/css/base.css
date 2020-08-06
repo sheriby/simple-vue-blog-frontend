@@ -65,3 +65,30 @@ a {
 .right {
   float: right;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+} /* 这是针对缺省样式 (必须的) */
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+} /* 滚动条的滑轨背景颜色 */
+
+::-webkit-scrollbar-thumb {
+  background-color: #ff9600;
+} /* 滑块颜色 */
+
+::-webkit-scrollbar-button {
+  /*background-color: #efefef;*/
+  display: none;
+} /* 滑轨两头的监听按钮颜色 */
+
+::-webkit-scrollbar-corner {
+  background-color: #efefef;
+} /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+
+::selection {
+  background-color: #20a0ff;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+}
