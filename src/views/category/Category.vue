@@ -1,43 +1,39 @@
 <template>
-  <div id="discovery">
-    <div id="discovery-text">
-      <i class="el-icon-s-promotion"></i>
-      <span>Discovery</span>
+  <div class="category">
+    <cover :cover="cover">
+      <div class="category-info" slot="cover-content">
+        <h2 class="category-name">{{name}}</h2>
+        <p class="desc">{{desc}}</p>
+      </div>
+    </cover>
+    <div class="container">
+      <simple-blog-list :blogs="blogs"/>
+      <div class="pre" @click="loadblog">
+        <previous ref="pre"/>
+      </div>
     </div>
-    <div id="blog-container">
-      <ul>
-        <li v-for="(blog, index) in blogs" :key="index">
-          <blog-left-item v-if="index % 2 === 0" :cover="blog.cover" :date="blog.date"
-                          :view="blog.view" :title="blog.title" :tags="blog.tags"
-                          :type="blog.type" :desc="blog.desc">
-          </blog-left-item>
-          <blog-right-item v-else :cover="blog.cover" :date="blog.date"
-                           :view="blog.view" :title="blog.title" :tags="blog.tags"
-                          :type="blog.type" :desc="blog.desc">
-          </blog-right-item>
-        </li>
-      </ul>
-    </div>
-
-    <div class="pre" @click="loadblog">
-      <previous ref="pre"/>
-    </div>
+    <blog-footer/>
   </div>
 </template>
 
 <script>
-  import BlogLeftItem from '@/components/blog/BlogLeftItem'
-  import BlogRightItem from '@/components/blog/BlogRightItem'
+  import Cover from '@/components/cover/Cover'
+  import SimpleBlogList from '@/components/blog/SimpleBlogList'
   import Previous from '@/components/previous/Previous'
-
+  import BlogFooter from '@/components/footer/BlogFooter'
   export default {
-    name: "Discovery",
+    name: "Category",
     components: {
+      BlogFooter,
       Previous,
-      BlogRightItem, BlogLeftItem
+      SimpleBlogList,
+      Cover
     },
     data() {
       return {
+        cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
+        name: '技术',
+        desc: 'Geek —— Only for Love',
         blogs: [
           {
             cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
@@ -75,16 +71,15 @@
     },
     methods: {
       loadblog() {
+        console.log('111')
         this.$refs['pre'].startloading()
 
-        this.requestBlog(++this.page).then((data) => {
+        this.requestBlog(this.page).then((data) => {
           data.forEach(x => {
             this.blogs.push(x)
           })
           this.$refs['pre'].endloading()
         })
-
-
       },
       requestBlog(page) {
         return new Promise((resolve) => {
@@ -94,51 +89,34 @@
             resolve(data)
           }, 2000)
         })
-      },
-      loadItem() {
-        const h = document.documentElement.clientHeight
-
-        const top = document.documentElement.scrollTop + h
-        const hidden = document.querySelector('.blog-item:not(.blog-item-show)')
-        if (hidden == null) {
-          return false
-        }
-        const hiddenh = hidden.offsetTop + 70
-        if (top > hiddenh) {
-          hidden.className = 'blog-item blog-item-show'
-        }
       }
-    },
-    mounted() {
-      window.addEventListener('scroll', this.loadItem)
-    },
-    updated() {
-      this.loadItem()
     }
   }
 </script>
 
 <style lang="less" scoped>
 
-  #discovery {
-    margin: 80px auto;
-  }
+  div.category-info {
+    color: white;
+    text-align: center;
+    height: 100%;
+    padding: 200px 0;
+    font-family: serif;
+    text-shadow: rgba(0, 0, 0) 2px 2px 10px;
 
-  div#discovery-text {
-    height: 30px;
-    border-bottom: #ddd 1px dashed;
+    h2 {
+      font-size: 50px;
+      letter-spacing: 8px;
+    }
 
-    span {
-      display: inline-block;
-      padding-left: 7px;
+    .desc {
+      font-size: 20px;
+      margin-top: 20px;
     }
   }
 
-  div#blog-container {
-    margin: 40px auto;
-  }
-
-  li {
-    list-style: none;
+  div.container {
+    width: 65%;
+    margin: 0 auto;
   }
 </style>

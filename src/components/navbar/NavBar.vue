@@ -8,8 +8,8 @@
       </el-col>
       <el-col :span="14" class="nav-col">
         <el-menu id="navlist" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-                 @select="handleSelect">
-          <el-menu-item index="1"><i class="el-icon-s-home"></i>
+                 @select="handleSelect" :router="true">
+          <el-menu-item index="/index"><i class="el-icon-s-home"></i>
             <span class="title">首页</span>
           </el-menu-item>
           <el-submenu index="2">
@@ -69,22 +69,17 @@
 
   export default {
     name: "NavBar",
-    props: {
-      alwaysShow: {
-        type: Boolean,
-        default: false
-      }
-    },
     data() {
       return {
         activeIndex: "1",
         searchtext: '',
-        show: false
+        show: false,
+        alwaysShow: false
       }
     },
     methods: {
       handleSelect(key) {
-        console.log(key)
+        this.alwaysShow = key !== '/index';
       },
       search() {
         const searchinput = document.querySelector('div.search-input')
@@ -104,12 +99,17 @@
         document.body.style.overflow = 'auto'
       }
     },
+    created() {
+      console.log('xxx', this.$route.path)
+      this.alwaysShow = !this.$route.path.includes('/index')
+    },
     mounted() {
       const titles = document.getElementsByClassName('el-submenu__title')
       for (let title of titles) {
         title.style.padding = '0 5px'
       }
 
+      //TODO fix this problem after project fininshed
       if (!this.alwaysShow) {
         const navbar = document.getElementsByClassName('nav-bar')[0]
         const navcol = document.getElementsByClassName('nav-col')[0]
@@ -217,7 +217,7 @@
   }
 
   .name-col {
-    font-size: 27px;
+    font-size: 23px;
     font-weight: bolder;
     margin-left: 10px;
   }

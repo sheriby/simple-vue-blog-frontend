@@ -1,12 +1,12 @@
 <template>
-  <div class="cover" :style="coverStyle">
+  <div class="index-cover" :style="coverStyle">
   </div>
 </template>
 
 <script>
 
   export default {
-    name: "Index",
+    name: "IndexCover",
     data() {
       return {
         coverStyle: {
@@ -27,14 +27,14 @@
         timer = setTimeout(() => {
           const h = document.documentElement.clientHeight
           this.coverStyle.height = h + 'px'
-        }, 300)
+        }, 100)
       })
     }
   }
 </script>
 
 <style scoped>
-  .cover {
+  .index-cover {
     background: url("../../assets/img/bg.png");
     background-size: cover;
     background-position: center;

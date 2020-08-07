@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav-bar :always-show="navAlwaysShow" />
+    <nav-bar ref="navbar"/>
     <scroll-line />
     <router-view />
   </div>
@@ -16,12 +16,9 @@ export default {
     ScrollLine,
     NavBar,
   },
-  computed: {
-    navAlwaysShow() {
-      return !this.$route.path.includes("/index");
-    },
-  },
-  mounted() {},
+  updated() {
+    this.$refs['navbar'].alwaysShow = !this.$route.path.includes('/index')
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <cover/>
+    <index-cover/>
     <avatar/>
     <wave/>
     <div class="container">
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import Cover from '@/views/index/Cover'
+  import IndexCover from '@/views/index/IndexCover'
   import Avatar from '@/views/index/Avatar'
   import Wave from '@/views/index/Wave'
   import Welcome from '@/views/index/Welcome'
@@ -26,7 +26,7 @@
     components: {
       BlogFooter,
       Discovery,
-      Cover,
+      IndexCover,
       Avatar,
       Wave,
       Welcome,

@@ -31,7 +31,7 @@ body {
   user-select: none; /* 禁止用户鼠标在页面上选中文字/图片等 */
   -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
   /*background: var(--color-background);*/
-  /*background-image: url("../img/bg.png");*/
+  background-image: url("../img/bodybg.png");
   color: var(--color-text);
   /*background-image: url("../img/themebg/point.png");*/
   /* rem vw/vh */
@@ -91,4 +91,8 @@ a {
   background-color: #20a0ff;
   color: #fff;
   text-shadow: 0 1px 0 rgba(0,0,0,.2);
+}
+
+span {
+  outline: none;
 }

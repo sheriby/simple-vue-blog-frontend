@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/index/Index'
 import Blog from '@/views/blog/Blog'
+import Category from '@/views/category/Category'
+import Tag from '@/views/tag/Tag'
+import MessageBoard from '@/views/messageboard/MessageBoard'
 
 Vue.use(VueRouter)
 
@@ -17,12 +20,27 @@ const routes = [
   {
     path: '/blog/:id',
     component: Blog
+  },
+  {
+    path: '/category/:id',
+    component: Category
+  },
+  {
+    path: '/tag/:id',
+    component: Tag
+  },
+  {
+    path: '/messageboard',
+    component: MessageBoard
   }
 ]
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
+  scrollBehavior() {
+    return {x: 0, y: 0}
+  }
 })
 
 export default router
