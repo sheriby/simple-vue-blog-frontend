@@ -22,7 +22,7 @@
       commentSize() {
         return this.comments.length
       }
-    }
+    },
   }
 </script>
 

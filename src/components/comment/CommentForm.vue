@@ -2,7 +2,7 @@
   <div class="comment-form">
     <el-form ref="commentForm" :model="comment" :rules="commentRules">
       <el-form-item prop="content">
-        <el-input class="content" type="textarea" placeholder="你是我一生只会遇见一次的惊喜..."
+        <el-input class="content" type="textarea"
                   :rows="6" v-model="comment.content"></el-input>
       </el-form-item>
 
@@ -33,6 +33,9 @@
       </el-row>
 
     </el-form>
+    <span class="flag">
+      你是我一生只会遇见一次的惊喜...
+    </span>
   </div>
 </template>
 
@@ -69,6 +72,24 @@
           }
         })
       }
+    },
+    mounted() {
+      const area = document.querySelector('textarea')
+      const flag = document.querySelector('span.flag')
+
+      flag.addEventListener('click', () => {
+        area.focus()
+      })
+      area.addEventListener('focus', () => {
+        flag.className = 'flag flag-show'
+      })
+
+      area.addEventListener('focusout', () => {
+        if (area.innerText === '') {
+          flag.className = 'flag'
+        }
+      })
+
     }
   }
 </script>
@@ -111,6 +132,33 @@
     &:focus {
       border-color: #fe9600;
     }
+  }
+
+  div.comment-form {
+    position: relative;
+  }
+
+  span.flag {
+    color: #555555;
+    padding: 2px 5px;
+    border-radius: 1px;
+    font-size: 12px;
+    /*opacity: 0;*/
+
+    position: absolute;
+    top: -7px;
+    left: 20px;
+
+    transform: translate(25px, 31px) scale(1.3, 1.2);
+    transition: transform ease-in-out .5s, color ease-in-out .5s;
+  }
+
+  span.flag-show {
+    color: white;
+    background: #fe9600;
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    transition: ease-in-out .5s;
   }
 
 </style>

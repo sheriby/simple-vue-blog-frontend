@@ -64,6 +64,7 @@
     overflow: hidden;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
     transition: box-shadow .3s ease;
+    opacity: 0;
 
 
     position: relative;
@@ -71,6 +72,20 @@
     &:active {
       top: 2px
     }
+  }
+
+  @keyframes blog-item-show {
+    0% {
+      transform: translateY(70px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .blog-item-show {
+    opacity: 1;
+    animation: blog-item-show ease-in-out .5s;
   }
 
   .blog-item:hover {

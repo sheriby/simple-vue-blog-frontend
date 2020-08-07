@@ -13,6 +13,21 @@
     components: {CommentForm, CommentList},
     props: {
       comments: Array
+    },
+    mounted() {
+      const form = document.querySelector('div.comment-form')
+      const toForm = () => {
+        console.log('scroll')
+        form.scrollIntoView({
+          block: 'center',
+          behavior: 'smooth'
+        })
+      }
+
+      const replys = document.querySelectorAll('div.reply button')
+      replys.forEach(x => {
+        x.addEventListener('click', toForm)
+      })
     }
   }
 </script>

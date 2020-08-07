@@ -45,7 +45,7 @@
       atNotEmpty() {
         return this.at !== undefined && this.at !== null && this.at.length !== 0
       }
-    }
+    },
   }
 </script>
 
@@ -65,13 +65,15 @@
     }
   }
 
-  div.info  {
+  div.info {
     margin-left: 10px;
+
     div.name {
       font-size: 17px;
       font-family: serif;
       color: #fe9600;
     }
+
     div.date-info {
       color: #aaaaaa;
       font-size: 11px;

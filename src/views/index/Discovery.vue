@@ -100,7 +100,27 @@
             resolve(data)
           }, 2000)
         })
+      },
+      loadItem() {
+        const h = document.documentElement.clientHeight
+
+        const top = document.documentElement.scrollTop + h
+        const hidden = document.querySelector('.blog-item:not(.blog-item-show)')
+        if (hidden == null) {
+          return false
+        }
+        const hiddenh = hidden.offsetTop + 70
+        console.log(hiddenh, top)
+        if (top > hiddenh) {
+          hidden.className = 'blog-item blog-item-show'
+        }
       }
+    },
+    mounted() {
+      window.addEventListener('scroll', this.loadItem)
+    },
+    updated() {
+      this.loadItem()
     }
   }
 </script>

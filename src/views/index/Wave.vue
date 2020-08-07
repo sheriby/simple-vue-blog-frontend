@@ -58,7 +58,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   @keyframes updown {

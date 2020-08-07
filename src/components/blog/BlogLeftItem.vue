@@ -59,6 +59,7 @@
   .blog-item {
     width: 800px;
     height: 300px;
+    opacity: 0;
 
     margin: 40px auto;
     border-radius: 10px;
@@ -71,6 +72,20 @@
     &:active {
       top: 2px
     }
+  }
+
+  @keyframes blog-item-show {
+    0% {
+      transform: translateY(70px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .blog-item-show {
+    opacity: 1;
+    animation: blog-item-show ease-in-out .5s;
   }
 
   img.pic {
