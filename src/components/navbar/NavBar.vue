@@ -12,26 +12,21 @@
           <el-menu-item index="/index"><i class="el-icon-s-home"></i>
             <span class="title">首页</span>
           </el-menu-item>
-          <el-submenu index="2">
+          <el-submenu index="/archive">
             <template slot="title" class="title"><i class="el-icon-s-management"></i>
-              <span class="title">归档</span>
+              <span class="title" @click="toArchive">归档</span>
             </template>
-            <el-menu-item index="2-1">技术</el-menu-item>
+            <el-menu-item index="/category/3">技术</el-menu-item>
             <el-menu-item index="2-2">生活</el-menu-item>
             <el-menu-item index="2-3">随想</el-menu-item>
             <el-menu-item index="2-3">资源</el-menu-item>
             <el-menu-item index="2-3">转载</el-menu-item>
           </el-submenu>
-          <el-submenu index="3">
-            <template slot="title"><i class="el-icon-menu"></i>
-              <span class="title">清单</span>
-            </template>
-            <el-menu-item index="3-1">书单</el-menu-item>
-            <el-menu-item index="3-2">番组</el-menu-item>
-            <el-menu-item index="3-3">歌单</el-menu-item>
-            <el-menu-item index="3-3">图集</el-menu-item>
-          </el-submenu>
-          <el-menu-item index="4"><i class="el-icon-s-comment"></i>
+          <el-menu-item index="/tag/3">
+            <i class="el-icon-menu"></i>
+            <span class="title">标签</span>
+          </el-menu-item>
+          <el-menu-item index="/messageboard"><i class="el-icon-s-comment"></i>
             <span class="title">留言板</span>
           </el-menu-item>
           <el-menu-item index="5"><i class="el-icon-s-custom"></i>
@@ -79,7 +74,7 @@
     },
     methods: {
       handleSelect(key) {
-        this.alwaysShow = key !== '/index';
+        this.alwaysShow = key !== '/index'
       },
       search() {
         const searchinput = document.querySelector('div.search-input')
@@ -97,6 +92,9 @@
         const searchinput = document.querySelector('div.search-input')
         searchinput.style.visibility = 'hidden'
         document.body.style.overflow = 'auto'
+      },
+      toArchive() {
+        this.$router.push('/archive')
       }
     },
     created() {

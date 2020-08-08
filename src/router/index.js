@@ -5,6 +5,7 @@ import Blog from '@/views/blog/Blog'
 import Category from '@/views/category/Category'
 import Tag from '@/views/tag/Tag'
 import MessageBoard from '@/views/messageboard/MessageBoard'
+import Archive from '@/views/archive/Archive'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,10 @@ const routes = [
   {
     path: '/messageboard',
     component: MessageBoard
+  },
+  {
+    path: '/archive',
+    component: Archive
   }
 ]
 

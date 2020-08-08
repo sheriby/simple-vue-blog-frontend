@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "activate-power-mode": "git:github.com/disjukr/activate-power-mode.git#gh-pages",
+    "animate.css": "^4.1.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
