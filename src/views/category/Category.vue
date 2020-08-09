@@ -2,12 +2,12 @@
   <div class="category">
     <cover :cover="cover">
       <div class="category-info" slot="cover-content">
-        <h2 class="category-name">{{name}}</h2>
-        <p class="desc">{{desc}}</p>
+        <h2 class="category-name">{{typeInfo.name}}</h2>
+        <p class="desc">{{typeInfo.desc}}</p>
       </div>
     </cover>
     <div class="container">
-      <simple-blog-list :blogs="blogs"/>
+      <simple-blog-list :blogs="typeInfo.blogs"/>
       <div class="pre" @click="loadblog">
         <previous ref="pre"/>
       </div>
@@ -21,6 +21,7 @@
   import SimpleBlogList from '@/components/blog/SimpleBlogList'
   import Previous from '@/components/previous/Previous'
   import BlogFooter from '@/components/footer/BlogFooter'
+  import {getTypeInfo} from '../../network/type'
   export default {
     name: "Category",
     components: {
@@ -32,64 +33,47 @@
     data() {
       return {
         cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-        name: '技术',
-        desc: 'Geek —— Only for Love',
-        blogs: [
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          },
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          },
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          }
-        ],
+        typeInfo: {},
         page: 1
       }
     },
+    created() {
+      const id = this.$route.params.id
+      getTypeInfo(id, this.page).then(res => {
+        this.typeInfo = res.data
+      }).catch(err => {
+        console.log(err);
+      })
+    },
     methods: {
       loadblog() {
-        console.log('111')
         this.$refs['pre'].startloading()
 
-        this.requestBlog(this.page).then((data) => {
-          data.forEach(x => {
-            this.blogs.push(x)
+        this.requestBlog().then((res) => {
+          const blogs = res.data.blogs
+          if (blogs === undefined || blogs === null || blogs.length === 0) {
+            this.$refs.pre.nodata()
+            return
+          }
+          blogs.forEach(x => {
+            this.typeInfo.blogs.push(x)
           })
           this.$refs['pre'].endloading()
         })
       },
-      requestBlog(page) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            console.log(page)
-            const data = this.blogs
-            resolve(data)
-          }, 2000)
-        })
+      requestBlog() {
+        return getTypeInfo(this.typeInfo.id, ++this.page)
       }
+    },
+    beforeRouteUpdate(to, from ,next) {
+      const id = to.params.id
+      this.page = 1
+      getTypeInfo(id, this.page).then(res => {
+        this.typeInfo = res.data
+        next()
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 </script>

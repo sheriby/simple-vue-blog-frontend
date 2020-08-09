@@ -3,10 +3,10 @@
     <div class="container">
       <el-row v-if="notEmpty(previous) && notEmpty(next)" class="allrow">
         <el-col :span="12">
-          <div class="previous">
+          <div class="previous" @click="toPrev">
             <img :src="previous.cover">
             <div class="info preinfo">
-              <div class="label">
+              <div class="label" @click="toPrev">
                 <div class="header">PREVIOUS POST</div>
                 <div class="title">{{previous.title}}</div>
               </div>
@@ -15,9 +15,9 @@
         </el-col>
         <el-col :span="12">
           <div class="next">
-            <img :src="next.cover">
+            <img :src="next.cover" @click="toNext">
             <div class="info nextinfo">
-              <div class="label">
+              <div class="label" @click="toNext">
                 <div class="header">NEXT POST</div>
                 <div class="title">{{next.title}}</div>
               </div>
@@ -26,10 +26,10 @@
         </el-col>
       </el-row>
       <div v-if="notEmpty(previous) && !notEmpty(next)">
-        <div class="previous">
+        <div class="previous" @click="toPrev">
           <img :src="previous.cover">
           <div class="info preinfo">
-            <div class="label">
+            <div class="label" @click="toPrev">
               <div class="header">PREVIOUS POST</div>
               <div class="title">{{previous.title}}</div>
             </div>
@@ -37,10 +37,10 @@
         </div>
       </div>
       <div v-if="!notEmpty(previous) && notEmpty(next)">
-        <div class="next">
+        <div class="next" @click="toNext">
           <img :src="next.cover">
           <div class="info nextinfo">
-            <div class="label">
+            <div class="label" @click="toNext">
               <div class="header">NEXT POST</div>
               <div class="title">{{next.title}}</div>
             </div>
@@ -71,6 +71,12 @@
     methods: {
       notEmpty(obj) {
         return obj !== undefined && obj !== null && Object.keys(obj).length !== 0
+      },
+      toPrev() {
+        this.$router.push('/blog/' + this.previous.id)
+      },
+      toNext() {
+        this.$router.push('/blog/' + this.next.id)
       }
     }
   }

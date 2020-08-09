@@ -1,5 +1,5 @@
 <template>
-  <div id="comment-list">
+  <div id="comment-list" v-if="commentNotEmpty">
     <div class="top">
       <span class="comment">Comments |</span>
       <span class="size"> {{commentSize}} 条评论</span>
@@ -21,6 +21,9 @@
     computed: {
       commentSize() {
         return this.comments.length
+      },
+      commentNotEmpty() {
+        return this.comments !== null && this.comments !== undefined && this.comments.length != 0
       }
     },
   }

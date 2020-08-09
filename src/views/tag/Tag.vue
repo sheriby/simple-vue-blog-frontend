@@ -2,8 +2,8 @@
   <div class="tag">
     <cover :cover="cover">
       <div class="tag-info" slot="cover-content">
-        <h2 class="tag-name">{{name}}</h2>
-        <p class="desc">{{desc}}</p>
+        <h2 class="tag-name">{{tag.name}}</h2>
+        <p class="desc">{{tag.desc}}</p>
       </div>
     </cover>
     <div class="container">
@@ -22,7 +22,7 @@
       :visible.sync="select"
       direction="ltr"
       size="30%">
-      <tag-item v-for="(tag, index) in tags" :key="index" :name="tag.name" :count="tag.count" />
+      <tag-item v-for="(tag, index) in tags" :key="index" :tag="tag" @itemclick="loadTag"  />
     </el-drawer>
     <blog-footer/>
   </div>
@@ -34,6 +34,8 @@
   import Previous from '@/components/previous/Previous'
   import TagItem from '@/views/tag/TagItem'
   import BlogFooter from '@/components/footer/BlogFooter'
+  import {getTagInfo, getBlogs} from '../../network/tag'
+
   export default {
     name: "Tag",
     components: {
@@ -43,113 +45,48 @@
     data() {
       return {
         cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-        name: 'Spring Boot',
-        desc: 'Without Spring Boot, I Will Not Use Java',
-        blogs: [
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          },
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          },
-          {
-            cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
-            date: '2020-08-04 19:06',
-            view: 8848,
-            title: 'Linux学习日记01',
-            tags: ['悦读', 'Linux'],
-            type: '技术',
-            desc: '第三章之linux中的两种链接文件，硬链接和软链接',
-            content: ' '
-          }
-        ],
         page: 1,
         select: false,
-        tags: [
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring',
-            count: 12
-          },
-          {
-            name: 'Spring MVC',
-            count: 13
-          },
-          {
-            name: 'Spring Security',
-            count: 9
-          },
-          {
-            name: 'Spring Data JPA',
-            count: 5
-          },
-          {
-            name: 'Spring Cloud',
-            count: 12
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-          {
-            name: 'Spring Boot',
-            count: 18
-          },
-        ]
+        tag: {},
+        tags: [],
+        blogs: []
       }
+    },
+    created() {
+      getTagInfo().then(res => {
+        this.tag = res.data.tag
+        this.tags = res.data.tags
+        this.blogs = res.data.blogs
+      }).catch(err => {
+        console.log(err)
+      })
     },
     methods: {
       loadblog() {
-        console.log('111')
         this.$refs['pre'].startloading()
 
-        this.requestBlog(this.page).then((data) => {
-          data.forEach(x => {
+        this.requestBlog().then((res) => {
+          const blogs = res.data
+          if (blogs === undefined || blogs === null || blogs.length === 0) {
+            this.$refs.pre.nodata()
+            return
+          }
+          blogs.forEach(x => {
             this.blogs.push(x)
           })
           this.$refs['pre'].endloading()
         })
       },
-      requestBlog(page) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            console.log(page)
-            const data = this.blogs
-            resolve(data)
-          }, 2000)
+      requestBlog() {
+        return getBlogs(this.tag.id, ++this.page) 
+      },
+      loadTag(tag) {
+        this.tag = tag
+        this.page = 1
+        this.select = false
+        getBlogs(tag.id, this.page).then(res => {
+          this.blogs = res.data
+          this.$refs.pre.restart()
         })
       }
     }

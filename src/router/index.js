@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/index/Index'
-import Blog from '@/views/blog/Blog'
-import Category from '@/views/category/Category'
-import Tag from '@/views/tag/Tag'
-import MessageBoard from '@/views/messageboard/MessageBoard'
-import Archive from '@/views/archive/Archive'
+
+const Blog = () => import('@/views/blog/Blog')
+const Category = () => import('@/views/category/Category')
+const Tag = () => import('@/views/tag/Tag')
+const MessageBoard = () => import('@/views/messageboard/MessageBoard')
+const Archive = () => import('@/views/archive/Archive')
 
 Vue.use(VueRouter)
 
@@ -23,11 +24,11 @@ const routes = [
     component: Blog
   },
   {
-    path: '/category/:id',
+    path: '/type/:id',
     component: Category
   },
   {
-    path: '/tag/:id',
+    path: '/tag',
     component: Tag
   },
   {
@@ -44,7 +45,7 @@ const router = new VueRouter({
   routes,
   mode: 'history',
   scrollBehavior() {
-    return {x: 0, y: 0}
+    return { x: 0, y: 0 }
   }
 })
 

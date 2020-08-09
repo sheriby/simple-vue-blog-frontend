@@ -1,6 +1,6 @@
 <template>
   <div class="simple-blog-item">
-    <div class="container">
+    <div class="container" @click="toBlog">
       <el-row>
         <el-col :span="4">
           <img :src="blog.cover">
@@ -28,6 +28,11 @@
     name: "SimpleBlogItem",
     props: {
       blog: Object
+    },
+    methods: {
+      toBlog() {
+        this.$router.push('/blog/' + this.blog.id)
+      }
     }
   }
 </script>

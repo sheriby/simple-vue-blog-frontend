@@ -2,7 +2,7 @@
   <div class="blog-item">
     <el-row>
       <el-col :span="13" class="cover">
-        <img :src="cover">
+        <img :src="cover" />
       </el-col>
       <el-col :span="11" class="desc">
         <div class="desc-container">
@@ -16,12 +16,14 @@
           <div class="tagtype">
             <div class="tags">
               <i class="el-icon-collection-tag"></i>
-              <span v-for="(tag, index) in tags" :key="tag">{{tag}}<span v-if="index !== tags.length-1">·</span>
+              <span v-for="(tag, index) in tags" :key="index">
+                {{tag.name}}
+                <span v-if="index !== tags.length-1">·</span>
               </span>
             </div>
             <div class="type">
               <i class="el-icon-folder"></i>
-              <span>{{type}}</span>
+              <span>{{type.name}}</span>
             </div>
           </div>
           <div class="desc-text">
@@ -37,135 +39,135 @@
 </template>
 
 <script>
-  export default {
-    name: "BlogListItem",
-    props: {
-      cover: String,
-      date: String,
-      title: String,
-      type: String,
-      tags: Array,
-      desc: String
-    }
-  }
+export default {
+  name: "BlogListItem",
+  props: {
+    cover: String,
+    date: String,
+    title: String,
+    type: Object,
+    tags: Array,
+    desc: String,
+  },
+};
 </script>
 
 <style lang="less" scoped>
+.blog-item {
+  width: 800px;
+  height: 300px;
 
-  .blog-item {
-    width: 800px;
-    height: 300px;
+  margin: 50px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 
-    margin: 50px auto;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
 
-    position: relative;
-
-    &:active {
-      top: 2px
-    }
+  &:active {
+    top: 2px;
   }
+}
 
-  .blog-item:hover {
-    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
+.blog-item:hover {
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
 
-    img {
-      transition: all 0.5s ease-in;
-      transform: scale(1.1);
-    }
+  img {
+    transition: all 0.5s ease-in;
+    transform: scale(1.1);
   }
+}
 
-  .el-row {
+.el-row {
+  height: 100%;
+}
+
+.el-col.cover {
+  height: 100%;
+  overflow: hidden;
+
+  img {
+    transition: all 0.5s ease-in-out;
     height: 100%;
   }
+}
 
-  .el-col.cover {
-    height: 100%;
-    overflow: hidden;
+.el-col.desc {
+  background: #fefefe;
+  height: 100%;
+}
 
-    img {
-      transition: all 0.5s ease-in-out;
-      height: 100%;
-    }
-  }
+div.desc-container {
+  padding: 30px;
+  text-align: right;
+}
 
-  .el-col.desc {
-    background: #fefefe;
-    height: 100%;
-  }
+div.date {
+  font-size: 13px;
 
-  div.desc-container {
-    padding: 30px;
-    text-align: right;
-  }
-
-  div.date {
-    font-size: 13px;
-
-    span {
-      display: inline-block;
-      padding-left: 7px;
-    }
-  }
-
-  div.title {
-    margin: 30px 0;
-    color: #555555;
-    letter-spacing: 1px;
-
-    &:hover {
-      color: #fe9600;
-      cursor: pointer;
-    }
-  }
-
-  div.tags, div.type {
+  span {
     display: inline-block;
-
-    font-size: 13px;
+    padding-left: 7px;
   }
+}
 
-  div.tagtype {
-    margin: 30px 0;
-  }
+div.title {
+  margin: 30px 0;
+  color: #555555;
+  letter-spacing: 1px;
 
-  div.tags span {
-    padding: 0 1px;
-  }
-
-  div.type {
-    margin-left: 10px;
-  }
-
-  div.tags, div.type {
-    span {
-      padding-left: 5px;
-    }
-  }
-
-  div.desc-text {
-    font-size: 15px;
-
-    color: #555555;
-    letter-spacing: 1px;
-    line-height: 1.4;
-    margin: 20px 0;
-  }
-
-  div.more {
-    font-size: 25px;
-
-    i:hover {
-      color: #fe9600;
-      cursor: pointer;
-    }
-  }
-
-  div.tagtype span:hover {
+  &:hover {
     color: #fe9600;
     cursor: pointer;
   }
+}
 
+div.tags,
+div.type {
+  display: inline-block;
+
+  font-size: 13px;
+}
+
+div.tagtype {
+  margin: 30px 0;
+}
+
+div.tags span {
+  padding: 0 1px;
+}
+
+div.type {
+  margin-left: 10px;
+}
+
+div.tags,
+div.type {
+  span {
+    padding-left: 5px;
+  }
+}
+
+div.desc-text {
+  font-size: 15px;
+
+  color: #555555;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  margin: 20px 0;
+}
+
+div.more {
+  font-size: 25px;
+
+  i:hover {
+    color: #fe9600;
+    cursor: pointer;
+  }
+}
+
+div.tagtype span:hover {
+  color: #fe9600;
+  cursor: pointer;
+}
 </style>

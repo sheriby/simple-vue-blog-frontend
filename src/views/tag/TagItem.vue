@@ -1,8 +1,8 @@
 <template>
-  <div class="tag-item">
-    <span class="name">{{name}}</span>
+  <div class="tag-item" @click="tagItemClick">
+    <span class="name">{{tag.name}}</span>
     <span class="count">
-      {{count}}
+      {{tag.blogCount}}
       <span class="triangle"></span>
     </span>
   </div>
@@ -12,8 +12,12 @@
   export default {
     name: "TagItem",
     props: {
-      name: String,
-      count: Number
+      tag: Object
+    },
+    methods: {
+      tagItemClick() {
+        this.$emit('itemclick', this.tag)
+      }
     }
   }
 </script>

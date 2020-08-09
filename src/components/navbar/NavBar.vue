@@ -16,13 +16,13 @@
             <template slot="title" class="title"><i class="el-icon-s-management"></i>
               <span class="title" @click="toArchive">归档</span>
             </template>
-            <el-menu-item index="/category/3">技术</el-menu-item>
-            <el-menu-item index="2-2">生活</el-menu-item>
-            <el-menu-item index="2-3">随想</el-menu-item>
-            <el-menu-item index="2-3">资源</el-menu-item>
-            <el-menu-item index="2-3">转载</el-menu-item>
+            <el-menu-item index="/type/1">技术</el-menu-item>
+            <el-menu-item index="/type/2">生活</el-menu-item>
+            <el-menu-item index="/type/3">资源</el-menu-item>
+            <el-menu-item index="/type/4">随想</el-menu-item>
+            <el-menu-item index="/type/5">转载</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/tag/3">
+          <el-menu-item index="/tag">
             <i class="el-icon-menu"></i>
             <span class="title">标签</span>
           </el-menu-item>
