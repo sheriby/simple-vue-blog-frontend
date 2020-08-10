@@ -2,10 +2,10 @@
   <div id="comment-list" v-if="commentNotEmpty">
     <div class="top">
       <span class="comment">Comments |</span>
-      <span class="size"> {{commentSize}} 条评论</span>
+      <span class="size"> {{commentCount}} 条评论</span>
     </div>
     <div class="comment-container">
-      <comment-reply-item v-for="(comment, index) in comments" :key="index" :comment="comment"/>
+      <comment-reply-item v-for="(comment, index) in comments" :key="index" :comment="comment" @reply="reply"/>
     </div>
   </div>
 </template>
@@ -16,16 +16,19 @@
     name: "CommentList",
     components: {CommentReplyItem},
     props: {
-      comments: Array
+      comments: Array,
+      commentCount: Number
     },
     computed: {
-      commentSize() {
-        return this.comments.length
-      },
       commentNotEmpty() {
         return this.comments !== null && this.comments !== undefined && this.comments.length != 0
       }
     },
+    methods: {
+      reply(data) {
+        this.$emit('reply', data)
+      }
+    }
   }
 </script>
 

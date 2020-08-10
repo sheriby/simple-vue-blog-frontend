@@ -5,22 +5,22 @@
         <img :src="avatarSrc">
       </div>
       <div class="info">
-        <div class="name">{{name}}</div>
+        <div class="name">{{comment.name}}</div>
         <div class="date-info">
           <i class="el-icon-date"></i>
           <span class="date">
-            {{date}}
+            {{comment.date}}
           </span>
         </div>
       </div>
     </div>
     <div class="content">
       <span v-if="atNotEmpty" class="at">
-        @{{at}}
+        @{{comment.at}}
       </span>
-      {{content}}
+      {{comment.content}}
     </div>
-    <div class="reply">
+    <div class="reply" @click="reply">
       <el-button type="success" size="mini">
         Reply
       </el-button>
@@ -32,20 +32,22 @@
   export default {
     name: "CommentItem",
     props: {
-      qq: Number,
-      name: String,
-      date: String,
-      content: String,
-      at: String
+      comment: Object
     },
     computed: {
       avatarSrc() {
-        return `http://q1.qlogo.cn/g?b=qq&nk=${this.qq}&s=640`
+        return `http://q1.qlogo.cn/g?b=qq&nk=${this.comment.qq}&s=640`
       },
       atNotEmpty() {
-        return this.at !== undefined && this.at !== null && this.at.length !== 0
+        const at = this.comment.at
+        return at !== undefined && at !== null && at.length !== 0
       }
     },
+    methods: {
+      reply() {
+        this.$emit('reply', {name: this.comment.name})
+      }
+    }
   }
 </script>
 

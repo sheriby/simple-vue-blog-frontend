@@ -9,7 +9,8 @@
             <blog-donate/>
             <license/>
             <blog-post :previous="blogdetail.previous" :next="blogdetail.next"/>
-            <blog-comment :comments="blogdetail.comments"/>
+            <blog-comment :comments="blogdetail.comments" 
+            :commentCount="blogdetail.commentCount" :blogId="blogdetail.id"/>
             <detail-footer/>
           </div>
         </el-col></el-row>
@@ -25,7 +26,7 @@
   import BlogPost from '@/views/blog/BlogPost'
   import BlogComment from '@/views/blog/BlogComment'
   import DetailFooter from '@/components/footer/DetailFooter'
-  import {getBlogDetail} from '../../network/blog' 
+  import {getBlogDetail, getComment} from '../../network/blog' 
   import hljs from 'highlight.js'
 
   export default {
@@ -34,6 +35,14 @@
     data() {
       return {
         blogdetail: {}
+      }
+    },
+    methods: {
+      refreshComment() {
+        getComment(this.blogdetail.id).then(res => {
+          this.blogdetail.comments = res.data.comments
+          this.blogdetail.commentCount = res.data.commentCount
+        }) 
       }
     },
     created() {

@@ -5,3 +5,9 @@ export function getBlogDetail(id) {
     url: '/blog/' + id
   })
 }
+
+export function getComment(id) {
+  return request({
+    url: '/blog/comment/' + id
+  })
+}

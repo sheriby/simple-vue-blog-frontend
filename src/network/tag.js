@@ -1,8 +1,14 @@
 import { request } from './request'
 
-export function getTagInfo() {
+export function getTagInfo(id) {
+  if (id === undefined || id === null) {
+    return request({
+      url: '/tag'
+    })
+  }
   return request({
-    url: '/tag'
+    url: '/tag',
+    params: { id }
   })
 }
 

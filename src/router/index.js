@@ -32,6 +32,10 @@ const routes = [
     component: Tag
   },
   {
+    path: '/tag/:id',
+    component: Tag
+  },
+  {
     path: '/messageboard',
     component: MessageBoard
   },

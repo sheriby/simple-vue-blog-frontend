@@ -1,12 +1,10 @@
 <template>
   <div class="comment-reply-item">
     <div class="main-comment">
-      <comment-item :name="comment.name" :qq="comment.qq"
-                    :date="comment.date" :content="comment.content"/>
+      <comment-item :comment="comment" @reply="reply"/>
     </div>
     <div v-if="replyNotEmpty" class="reply-comment">
-      <comment-item v-for="(item, index) in comment.reply" :key="index" :name="item.name"
-      :qq="item.qq" :date="item.date" :content="item.content" :at="item.at"/>
+      <comment-item v-for="(item, index) in comment.childs" :key="index" :comment="item" @reply="reply"/>
     </div>
   </div>
 </template>
@@ -21,8 +19,14 @@
     },
     computed:{
       replyNotEmpty() {
-        const reply = this.comment.reply
+        const reply = this.comment.childs
         return reply !== undefined && reply !== null && reply.length !== 0
+      }
+    },
+    methods: {
+      reply(data) {
+        data.id = this.comment.id
+        this.$emit('reply', data)
       }
     }
   }

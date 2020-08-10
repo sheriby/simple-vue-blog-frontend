@@ -53,7 +53,8 @@
       }
     },
     created() {
-      getTagInfo().then(res => {
+      const id = this.$route.params.id
+      getTagInfo(id).then(res => {
         this.tag = res.data.tag
         this.tags = res.data.tags
         this.blogs = res.data.blogs

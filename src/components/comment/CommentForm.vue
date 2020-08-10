@@ -36,15 +36,28 @@
     <span class="flag">
       你是我一生只会遇见一次的惊喜...
     </span>
+    <span class="at" v-show="comment.at !== undefined && comment.at !== null">
+      @{{comment.at}}
+      <span class="close" @click="cancelReply">
+        <i class="el-icon-close"></i>
+      </span>
+    </span>
   </div>
 </template>
 
 <script>
+
   export default {
     name: "CommentForm",
+    props: {
+      blogId: Number
+    },
     data() {
       return {
-        comment: {},
+        comment: {
+          at: null,
+          parentId: null
+        },
         commentRules: {
           content: [
             {required: true, message: '你还没有输入评论内容呢～', trigger: 'blur'}
@@ -65,12 +78,17 @@
       submit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit')
+            this.comment.blogId = this.blogId
+            this.$emit('submit', this.comment)
+            this.comment = {}
           } else {
-            console.log('error submit')
             return false
           }
         })
+      },
+      cancelReply() {
+        this.comment.at = null
+        this.comment.parentId = null
       }
     },
     mounted() {
@@ -85,7 +103,7 @@
       })
 
       area.addEventListener('focusout', () => {
-        if (area.innerText === '') {
+        if (area.value === '') {
           flag.className = 'flag'
         }
       })
@@ -159,6 +177,22 @@
     opacity: 1;
     transform: translate(0, 0) scale(1);
     transition: ease-in-out .5s;
+  }
+
+  span.at {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    background: deepskyblue;
+    font-weight: bolder;
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+
+    span.close {
+      cursor: pointer;
+    }
   }
 
 </style>

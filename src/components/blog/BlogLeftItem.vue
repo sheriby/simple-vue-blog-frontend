@@ -20,7 +20,9 @@
             <div class="tags">
               <i class="el-icon-collection-tag"></i>
               <span v-for="(tag, index) in tags" :key="index">
-                {{tag.name}}
+                <span @click.stop="toTags(tag.id)">
+                  {{tag.name}}
+                </span>
                 <span v-if="index !== tags.length-1" class="dot">·</span>
               </span>
             </div>
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+
 export default {
   name: "BlogLeftItem",
   props: {
@@ -56,11 +59,15 @@ export default {
   },
   methods: {
     blogdetail() {
-      this.$router.push('/blog/' + this.id)
+      // this.$router.push('/blog/' + this.id)
+      const {href} = this.$router.resolve({path: '/blog/' + this.id})
+      window.open(href, '_blank')
     },
     toType(id) {
-      console.log(id)
       this.$router.push('/type/'+id)
+    },
+    toTags(id) {
+      this.$router.push('/tag/' + id)
     }
   }
 };

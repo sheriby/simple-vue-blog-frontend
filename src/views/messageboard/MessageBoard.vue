@@ -7,8 +7,10 @@
       <div class="poem-container">
         <poem/>
       </div>
-      <comment-list/>
-      <comment-form/>
+      <comment-list :comments="messages" :commentCount="count" @reply="reply" />
+      <div class="form">
+        <comment-form ref="form" @submit="submit"/>
+      </div>
       <detail-footer/>
     </div>
   </div>
@@ -20,9 +22,45 @@
   import Poem from '@/views/messageboard/Poem'
   import CommentForm from '@/components/comment/CommentForm'
   import CommentList from '@/components/comment/CommentList'
+  import {getMessage, postMessage} from '../../network/message'
   export default {
     name: "MessageBoard",
-    components: {CommentList, CommentForm, Poem, DetailFooter, Cover}
+    components: {CommentList, CommentForm, Poem, DetailFooter, Cover},
+    data() {
+      return {
+        messages: [],
+        count: 0
+      }
+    },
+    created() {
+      this.refreshMessage()
+    },
+    methods: {
+      reply(data) {
+        console.log(data)
+        const form = document.querySelector('div.form')
+        form.scrollIntoView({
+          block: 'center',
+          behavior: 'smooth'
+        })
+
+        this.$refs.form.comment.at = data.name
+        this.$refs.form.comment.parentId = data.id
+      },
+      refreshMessage() {
+        getMessage().then(res => {
+          this.messages = res.data.messages
+          this.count = res.data.count
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      submit(comment) {
+        postMessage(comment).then(res => {
+          this.refreshMessage()
+        })
+      }
+    }
   }
 </script>
 

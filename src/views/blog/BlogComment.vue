@@ -1,33 +1,46 @@
 <template>
   <div id="blog-comment">
-    <comment-list :comments="comments"/>
-    <comment-form/>
+    <comment-list :comments="comments" :commentCount="commentCount" @reply="reply"/>
+    <div class="form">
+      <comment-form ref="form" :blogId="blogId" @submit="submit"/>
+    </div>
   </div>
 </template>
 
 <script>
   import CommentList from '@/components/comment/CommentList'
   import CommentForm from '@/components/comment/CommentForm'
+  import {postComment} from '../../network/comment'
+
   export default {
     name: "BlogComment",
     components: {CommentForm, CommentList},
     props: {
-      comments: Array
+      blogId: Number,
+      comments: Array,
+      commentCount: Number
     },
-    mounted() {
-      const form = document.querySelector('div.comment-form')
-      const toForm = () => {
-        console.log('scroll')
+    data() {
+      return {
+        replyInfo: {}
+      }
+    },
+    methods: {
+      reply(data) {
+        const form = document.querySelector('div.form')
         form.scrollIntoView({
           block: 'center',
           behavior: 'smooth'
         })
-      }
 
-      const replys = document.querySelectorAll('div.reply button')
-      replys.forEach(x => {
-        x.addEventListener('click', toForm)
-      })
+        this.$refs.form.comment.at = data.name
+        this.$refs.form.comment.parentId = data.id
+      },
+      submit(comment) {
+        postComment(comment).then(res => {
+          this.$parent.$parent.$parent.refreshComment()
+        })
+      }
     }
   }
 </script>
