@@ -7,8 +7,8 @@
       <el-collapse-transition>
         <ul v-show="show">
           <li v-for="(blog, index) in blogs" :key="index">
-            <span class="date">{{blog.date}}</span>
-            <span class="title">{{blog.name}}</span>
+            <span class="date">{{blog.time}}</span>
+            <span class="title" @click="toBlog(blog.id)">{{blog.title}}</span>
           </li>
         </ul>
       </el-collapse-transition>
@@ -20,12 +20,17 @@
   export default {
     name: "MonthArchive",
     props: {
-      month: Number,
+      month: String,
       blogs: Array
     },
     data() {
       return {
         show: false
+      }
+    },
+    methods: {
+      toBlog(id) {
+        this.$router.push('/blog/' + id)
       }
     }
   }

@@ -2,11 +2,11 @@
   <div class="year-archive">
     <div class="container">
       <div class="year">
-        <span>{{archive.year}}年</span>
+        <span>{{year}}年</span>
       </div>
       <div class="months">
-        <month-archive v-for="(month, index) in archive.months" :key="index"
-                       :month="month.month" :blogs="month.blogs"/>
+        <month-archive v-for="(value, key, index) in months" :key="index"
+                       :month="key" :blogs="value"/>
       </div>
     </div>
   </div>
@@ -18,7 +18,8 @@
     name: "YearArchive",
     components: {MonthArchive},
     props: {
-      archive: Object
+      year: String,
+      months: Object
     },
     methods: {
       allshow() {

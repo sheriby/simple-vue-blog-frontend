@@ -11,9 +11,7 @@
         [ 全部展开/收缩 ]
         </span>
       </div>
-      <year-archive :archive="archive"/>
-      <year-archive :archive="archive"/>
-      <year-archive :archive="archive"/>
+      <year-archive v-for="(value, key, index) in archive" :key="index" :year="key" :months="value"/>
       <blog-footer/>
     </div>
   </div>
@@ -23,6 +21,7 @@
   import Cover from '@/components/cover/Cover'
   import BlogFooter from '@/components/footer/BlogFooter'
   import YearArchive from '@/views/archive/YearArchive'
+  import {getArchive} from '../../network/archive'
 
   export default {
     name: "Archive",
@@ -36,45 +35,16 @@
         cover: 'https://cdn.jsdelivr.net/gh/sheriby/cdn@1.12/img/cover/15.jpg',
         allshow: true,
         archive: {
-          year: 2020,
-          months: [
-            {
-              month: 8,
-              blogs: [
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                },
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                },
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                }
-              ]
-            },
-            {
-              month: 4,
-              blogs: [
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                },
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                },
-                {
-                  date: '04日 12:56:12',
-                  name: 'Spring Boot自动装箱原理浅析'
-                }
-              ]
-            }
-          ]
         }
       }
+    },
+    created() {
+      getArchive().then(res => {
+        this.archive = res.data
+        console.log(this.archive)
+      }).catch(err => {
+        console.log(err)
+      })
     },
     methods: {
       fold() {
