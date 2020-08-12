@@ -7,8 +7,10 @@
 </template>
 
 <script>
-import NavBar from "components/navbar/NavBar";
-import ScrollLine from "@/components/scroll/ScrollLine";
+import NavBar from "components/navbar/NavBar"
+import ScrollLine from "@/components/scroll/ScrollLine"
+import hljs from 'highlight.js'
+window.hljs = hljs
 
 export default {
   name: "App",

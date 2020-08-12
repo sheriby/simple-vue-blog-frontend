@@ -1,4 +1,3 @@
-import hljs from 'highlight.js'
 import 'highlightjs-line-numbers.js'
 import '../assets/css/highlight.css'
 
@@ -8,13 +7,13 @@ Highlight.install = function(Vue) {
     inserted: function(el) {
       const blocks = el.querySelectorAll('pre code')
       for (let i = 0; i < blocks.length; i++) {
-        hljs.highlightBlock(blocks[i])
+        window.hljs.highlightBlock(blocks[i])
       }
     },
     componentUpdated: function(el) {
       const blocks = el.querySelectorAll('pre code')
       for (let i = 0; i < blocks.length; i++) {
-        hljs.highlightBlock(blocks[i])
+        window.hljs.highlightBlock(blocks[i])
       }
     }
   })

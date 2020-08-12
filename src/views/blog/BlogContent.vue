@@ -14,7 +14,7 @@
 <script>
 import tocbot from 'tocbot'
 import 'tocbot/dist/tocbot.css'
-import hljs, { highlightBlock } from 'highlight.js'
+import { highlightBlock } from 'highlight.js'
 
 export default {
   name: 'BlogContent',
@@ -27,8 +27,8 @@ export default {
     }
   },
   mounted() {
-    hljs.initHighlightingOnLoad();
-    hljs.initLineNumbersOnLoad();
+    window.hljs.initHighlightingOnLoad();
+    window.hljs.initLineNumbersOnLoad();
 
     tocbot.init({
       tocSelector: 'div.toc',
@@ -54,12 +54,10 @@ export default {
       }, 100)
     })
   },
-  methods: {
-  },
   updated() {
     document.querySelectorAll('pre code').forEach(block => {
-      hljs.highlightBlock(block)
-      hljs.lineNumbersBlock(block)
+      window.hljs.highlightBlock(block)
+      window.hljs.lineNumbersBlock(block)
     })
 
     tocbot.init({

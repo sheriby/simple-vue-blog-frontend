@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '@/views/index/Index'
 
+const Index = () => import('@/views/index/Index')
 const Blog = () => import('@/views/blog/Blog')
 const Category = () => import('@/views/category/Category')
 const Tag = () => import('@/views/tag/Tag')
@@ -11,38 +11,14 @@ const Archive = () => import('@/views/archive/Archive')
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/index'
-  },
-  {
-    path: '/index',
-    component: Index
-  },
-  {
-    path: '/blog/:id',
-    component: Blog
-  },
-  {
-    path: '/type/:id',
-    component: Category
-  },
-  {
-    path: '/tag',
-    component: Tag
-  },
-  {
-    path: '/tag/:id',
-    component: Tag
-  },
-  {
-    path: '/messageboard',
-    component: MessageBoard
-  },
-  {
-    path: '/archive',
-    component: Archive
-  }
+  { path: '/', redirect: '/index' },
+  { path: '/index', component: Index },
+  { path: '/blog/:id', component: Blog },
+  { path: '/type/:id', component: Category },
+  { path: '/tag', component: Tag },
+  { path: '/tag/:id', component: Tag },
+  { path: '/messageboard', component: MessageBoard },
+  { path: '/archive', component: Archive },
 ]
 
 const router = new VueRouter({
