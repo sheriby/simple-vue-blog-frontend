@@ -11,3 +11,13 @@ export function getComment(id) {
     url: '/blog/comment/' + id
   })
 }
+
+export function searchInfo(keyword) {
+  const params = new URLSearchParams()
+  params.append('keyword', keyword)
+
+  return request({
+    url: '/blog/search/info',
+    params
+  })
+}

@@ -7,13 +7,21 @@
         <span>的小博客</span>
       </el-col>
       <el-col :span="14" class="nav-col">
-        <el-menu id="navlist" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-                 @select="handleSelect" :router="true">
-          <el-menu-item index="/index"><i class="el-icon-s-home"></i>
+        <el-menu
+          id="navlist"
+          :default-active="activeIndex"
+          class="el-menu-demo"
+          mode="horizontal"
+          @select="handleSelect"
+          :router="true"
+        >
+          <el-menu-item index="/index"
+            ><i class="el-icon-s-home"></i>
             <span class="title">首页</span>
           </el-menu-item>
           <el-submenu index="/archive">
-            <template slot="title" class="title"><i class="el-icon-s-management"></i>
+            <template slot="title" class="title"
+              ><i class="el-icon-s-management"></i>
               <span class="title" @click="toArchive">归档</span>
             </template>
             <el-menu-item index="/type/1">技术</el-menu-item>
@@ -26,317 +34,399 @@
             <i class="el-icon-menu"></i>
             <span class="title">标签</span>
           </el-menu-item>
-          <el-menu-item index="/messageboard"><i class="el-icon-s-comment"></i>
+          <el-menu-item index="/messageboard"
+            ><i class="el-icon-s-comment"></i>
             <span class="title">留言板</span>
           </el-menu-item>
-          <el-menu-item index="5"><i class="el-icon-s-custom"></i>
+          <el-menu-item index="5"
+            ><i class="el-icon-s-custom"></i>
             <span class="title">友人帐</span>
           </el-menu-item>
-          <el-menu-item index="6"><i class="el-icon-s-goods"></i>
+          <el-menu-item index="6"
+            ><i class="el-icon-s-goods"></i>
             <span class="title">赞赏</span>
           </el-menu-item>
-          <el-menu-item index="7"><i class="el-icon-info"></i>
+          <el-menu-item index="7"
+            ><i class="el-icon-info"></i>
             <span class="title">关于</span>
           </el-menu-item>
         </el-menu>
-
       </el-col>
       <el-col :span="5" class="search-col">
         <span class="el-icon-search search" @click="search"></span>
-        `
       </el-col>
     </el-row>
     <div class="search-input">
       <div class="input">
-        <el-input v-model="searchtext" placeholder="Type something..."
-                  @keyup.enter.native="searchenter"
-                  @keyup.esc.native="close">
+        <el-input
+          v-model="searchtext"
+          placeholder="Type something..."
+          @keyup.esc.native="close"
+          @input="handleInput"
+        >
         </el-input>
         <div class="close icon">
           <i class="el-icon-close" @click="close"></i>
         </div>
       </div>
+      <el-collapse-transition>
+        <div class="data-container" v-show="showSearch">
+          <div v-if="searchDatas.blogs">
+            <div class="info">Blog 博客</div>
+            <search-item
+              v-for="(item, index) in searchDatas.blogs"
+              :key="index"
+              :search="item"
+              type="blog"
+              @click="searchClick"
+            />
+          </div>
+          <div v-if="searchDatas.types">
+            <div class="info">Type 分类</div>
+            <search-item
+              v-for="(item, index) in searchDatas.types"
+              :key="index"
+              :search="item"
+              type="type"
+              @click="searchClick"
+            />
+          </div>
+          <div v-if="searchDatas.tags">
+            <div class="info">Tag 标签</div>
+            <search-item
+              v-for="(item, index) in searchDatas.tags"
+              :key="index"
+              :search="item"
+              type="tag"
+              @click="searchClick"
+            />
+          </div>
+        </div>
+      </el-collapse-transition>
     </div>
   </div>
 </template>
 
 <script>
+import SearchItem from '@/components/navbar/SearchItem'
+import {searchInfo} from '@/network/blog'
 
-  export default {
-    name: "NavBar",
-    data() {
-      return {
-        activeIndex: "1",
-        searchtext: '',
-        show: false,
-        alwaysShow: false
-      }
+export default {
+  name: 'NavBar',
+  components: {
+    SearchItem
+  },
+  data() {
+    return {
+      activeIndex: '1',
+      searchtext: '',
+      show: false,
+      alwaysShow: false,
+      timeId: -1,
+      showSearch: false,
+      searchDatas: {}
+    }
+  },
+  methods: {
+    handleSelect(key) {
+      this.alwaysShow = key !== '/index'
     },
-    methods: {
-      handleSelect(key) {
-        this.alwaysShow = key !== '/index'
-      },
-      search() {
-        const searchinput = document.querySelector('div.search-input')
-        searchinput.style.visibility = 'visible'
-        document.body.style.overflow = 'hidden'
-      },
-      close() {
-        const searchinput = document.querySelector('div.search-input')
-        this.searchtext = ''
-        searchinput.style.visibility = 'hidden'
-        document.body.style.overflow = 'auto'
-      },
-      searchenter() {
-        console.log('submit')
-        const searchinput = document.querySelector('div.search-input')
-        searchinput.style.visibility = 'hidden'
-        document.body.style.overflow = 'auto'
-      },
-      toArchive() {
-        this.$router.push('/archive')
-      }
+    search() {
+      const searchinput = document.querySelector('div.search-input')
+      searchinput.style.visibility = 'visible'
+      document.body.style.overflow = 'hidden'
+      searchinput.querySelector('input').focus()
     },
-    created() {
-      console.log('xxx', this.$route.path)
-      this.alwaysShow = !this.$route.path.includes('/index')
+    close() {
+      const searchinput = document.querySelector('div.search-input')
+      this.searchtext = ''
+      this.showSearch = false
+      searchinput.style.visibility = 'hidden'
+      document.body.style.overflow = 'auto'
     },
-    mounted() {
-      const titles = document.getElementsByClassName('el-submenu__title')
-      for (let title of titles) {
-        title.style.padding = '0 5px'
+    toArchive() {
+      this.$router.push('/archive')
+    },
+    handleInput() {
+      if (this.timeId != -1) {
+        clearTimeout(this.timeId)
       }
+      this.timeId = setTimeout(() => {
+        this.inputBlur()
+      }, 1000)
+    },
+    inputBlur() {
+      searchInfo(this.searchtext.trim()).then(res => {
+        this.searchDatas = res.data
+        this.showSearch = true
+      })
+    },
+    searchClick(data) {
+      const { type, id } = data
+      this.close()
+      this.$router.push('/' + type + '/' + id)
+    }
+  },
+  created() {
+    console.log('xxx', this.$route.path)
+    this.alwaysShow = !this.$route.path.includes('/index')
+  },
+  mounted() {
+    const titles = document.getElementsByClassName('el-submenu__title')
+    for (let title of titles) {
+      title.style.padding = '0 5px'
+    }
 
-      //TODO fix this problem after project fininshed
-      if (!this.alwaysShow) {
-        const navbar = document.getElementsByClassName('nav-bar')[0]
-        const navcol = document.getElementsByClassName('nav-col')[0]
-        navbar.style.background = 'rgba(0, 0, 0, 0.05)'
-        navcol.style.visibility = 'hidden'
-        navcol.style.transform = 'translateX(100px)'
+    //TODO fix this problem after project fininshed
+    if (!this.alwaysShow) {
+      const navbar = document.getElementsByClassName('nav-bar')[0]
+      const navcol = document.getElementsByClassName('nav-col')[0]
+      navbar.style.background = 'rgba(0, 0, 0, 0.05)'
+      navcol.style.visibility = 'hidden'
+      navcol.style.transform = 'translateX(100px)'
 
-        let itemhover = false
+      let itemhover = false
 
-
-        const over = () => {
-          if (!this.show) {
-            navcol.style.visibility = 'visible'
-            navbar.style.background = 'rgba(255, 255, 255, 0.9)'
-            navcol.style.transform = 'translateX(0)'
-            this.show = true
-          }
-          return false
+      const over = () => {
+        if (!this.show) {
+          navcol.style.visibility = 'visible'
+          navbar.style.background = 'rgba(255, 255, 255, 0.9)'
+          navcol.style.transform = 'translateX(0)'
+          this.show = true
         }
+        return false
+      }
 
-        const out = () => {
-          if (!itemhover && this.show && document.documentElement.scrollTop === 0) {
-            navcol.style.visibility = 'hidden'
-            navcol.style.transform = 'translateX(100px)'
-            navbar.style.background = 'rgba(0, 0, 0, 0.05)'
-            this.show = false
-          }
-          return false
+      const out = () => {
+        if (
+          !itemhover &&
+          this.show &&
+          document.documentElement.scrollTop === 0
+        ) {
+          navcol.style.visibility = 'hidden'
+          navcol.style.transform = 'translateX(100px)'
+          navbar.style.background = 'rgba(0, 0, 0, 0.05)'
+          this.show = false
         }
+        return false
+      }
 
-        navbar.onmouseenter = over
-        navbar.onmouseleave = () => {
+      navbar.onmouseenter = over
+      navbar.onmouseleave = () => {
+        setTimeout(out, 300)
+      }
+
+      const navitems = document.querySelectorAll('div.el-menu--horizontal')
+      for (let navitem of navitems) {
+        navitem.onmouseenter = () => {
+          itemhover = true
+        }
+        navitem.onmouseleave = () => {
+          itemhover = false
           setTimeout(out, 300)
         }
-
-        const navitems = document.querySelectorAll('div.el-menu--horizontal')
-        for (let navitem of navitems) {
-          navitem.onmouseenter = () => {
-            itemhover = true
-          }
-          navitem.onmouseleave = () => {
-            itemhover = false
-            setTimeout(out, 300)
-          }
-        }
-
-        let timer = null
-
-        window.addEventListener('scroll', () => {
-          if (timer) {
-            clearInterval(timer)
-          }
-          timer = setTimeout(() => {
-            const h = document.documentElement.scrollTop
-            if (h === 0 && this.show) {
-              out()
-            } else if (!this.show) {
-              over()
-            }
-          }, 100)
-        })
-
       }
+
+      let timer = null
+
+      window.addEventListener('scroll', () => {
+        if (timer) {
+          clearInterval(timer)
+        }
+        timer = setTimeout(() => {
+          const h = document.documentElement.scrollTop
+          if (h === 0 && this.show) {
+            out()
+          } else if (!this.show) {
+            over()
+          }
+        }, 100)
+      })
     }
   }
+}
 </script>
 
 <style lang="less" scoped>
-  .el-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
+.el-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-col {
+  display: flex;
+  justify-content: center;
+  color: #555555;
+}
+
+.el-menu-item,
+.el-submenu {
+  padding: 0 7px;
+}
+
+.name-col:hover {
+  span.prefix {
+    background: orange;
+    color: #ffffff;
   }
 
-  .nav-col {
-    display: flex;
-    justify-content: center;
-    color: #555555;
+  span {
+    color: orange;
   }
+}
 
-  /*.nav-bar:hover {*/
+.name-col {
+  font-size: 23px;
+  font-weight: bolder;
+  margin-left: 10px;
+}
 
-  /*  .nav-col {*/
-  /*    visibility: visible;*/
-  /*  }*/
+.name-col span {
+  padding: 3px;
+  color: #444444;
+}
 
-  /*  background: rgba(255, 255, 255, 0.9);*/
-  /*}*/
+.prefix {
+  border-radius: 10px;
+}
 
-  .el-menu-item, .el-submenu {
-    padding: 0 7px;
-  }
+.nav-bar {
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  background-clip: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 
+  transition: all 0.5s ease-in-out;
+}
 
-  .name-col:hover {
+.el-menu {
+  background: inherit;
+}
 
-    span.prefix {
-      background: orange;
-      color: #ffffff;
-    }
+.nav-col {
+  transition: transform 0.7s ease-in-out;
+}
 
-    span {
-      color: orange;
-    }
-  }
+.search-col {
+  text-align: right;
+  font-size: 20px;
+}
 
-  .name-col {
-    font-size: 23px;
-    font-weight: bolder;
-    margin-left: 10px;
-  }
+.search-col span {
+  margin-right: 20px;
+  padding: 10px;
+  color: #000000;
+}
 
-  .name-col span {
-    padding: 3px;
-    color: #444444;
-  }
+span.search:hover {
+  cursor: pointer;
+  color: #fe9600;
+}
 
-  .prefix {
-    border-radius: 10px;
-  }
+div.search-input {
+  visibility: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  padding: 100px 350px;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  z-index: 20;
+}
 
-  .nav-bar {
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 10;
-    background-clip: border-box;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+div.input {
+  position: relative;
 
-    transition: all 0.5s ease-in-out;
-  }
-
-  .el-menu {
-    background: inherit;
-  }
-
-  .nav-col {
-    transition: transform 0.7s ease-in-out;
-  }
-
-  .search-col {
-    text-align: right;
-    font-size: 20px;
-  }
-
-  .search-col span {
-    margin-right: 20px;
-    padding: 10px;
-    color: #000000;
-  }
-
-  span.search:hover {
-    cursor: pointer;
+  /deep/ .el-input__inner {
+    font-size: 16px;
     color: #fe9600;
-  }
+    font-family: serif;
+    padding: 15px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    outline: none;
+    border: none;
 
-
-  div.search-input {
-    visibility: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    padding: 100px 400px;
-    background: rgba(0, 0, 0, 0.5);
-    text-align: center;
-    z-index: 20;
-
-  }
-
-  div.input {
-    position: relative;
-  }
-
-  div.close.icon {
-    position: absolute;
-    right: 10px;
-    top: 13px;
-    z-index: 21;
-    color: #000000;
-    font-size: 14px;
-    height: 14px;
-    width: 14px;
-
-    border-radius: 50%;
-    background: #666666;
-
-    i.el-icon-close {
-      font-weight: bolder;
-      color: #ffffff;
-
-      &:hover {
-        cursor: pointer;
-      }
+    :focus {
+      outline: none;
+      border: none;
     }
   }
+}
 
-  @keyframes rotate {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(30deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    75% {
-      transform: rotate(-30deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
+div.data-container {
+  height: 400px;
+  overflow: auto;
+  div.info {
+    background: #fefefe;
+    text-align: left;
+    padding: 5px 15px;
+    color: #ff8198;
+    font-size: 15px;
+    font-family: serif;
 
+    border-bottom: rgb(230, 230, 230) 1px solid;
   }
+}
 
-  .el-menu-item:hover, .el-submenu:hover {
-    i {
-      color: #fe9600;
-      animation: 0.5s rotate linear 4;
-    }
+div.close.icon {
+  position: absolute;
+  right: 10px;
+  top: 13px;
+  z-index: 21;
+  color: #000000;
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
 
-    span.title {
-      color: #fe9600;
+  border-radius: 50%;
+  background: #666666;
+
+  i.el-icon-close {
+    font-weight: bolder;
+    color: #ffffff;
+
+    &:hover {
+      cursor: pointer;
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(30deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.el-menu-item:hover,
+.el-submenu:hover {
+  i {
+    color: #fe9600;
+    animation: 0.5s rotate linear 4;
   }
 
   span.title {
-    font-size: 15px;
+    color: #fe9600;
   }
+}
 
+span.title {
+  font-size: 15px;
+}
 </style>
