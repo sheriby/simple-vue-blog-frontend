@@ -51,7 +51,7 @@ export default {
         } else {
           toc.className = 'toc'
         }
-      }, 100)
+      }, 10)
     })
   },
   updated() {

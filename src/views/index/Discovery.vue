@@ -60,7 +60,7 @@ export default {
   },
   created() {
     getBlogInfo(this.page).then(res => {
-      this.blogs = res.data
+      this.blogs = res.data.blogs
     })
   },
   methods: {
@@ -72,7 +72,7 @@ export default {
           this.$refs['pre'].nodata()
           return
         }
-        res.data.forEach(x => {
+        res.data.blogs.forEach(x => {
           this.blogs.push(x)
         })
         this.$refs['pre'].endloading()

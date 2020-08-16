@@ -33,7 +33,8 @@
           behavior: 'smooth'
         })
 
-        this.$refs.form.comment.at = data.name
+        // this.$refs.form.comment.at = data.name
+        this.$set(this.$refs.form.comment, 'at', data.name)
         this.$refs.form.comment.parentId = data.id
       },
       submit(comment) {

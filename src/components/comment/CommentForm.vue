@@ -36,7 +36,7 @@
     <span class="flag">
       你是我一生只会遇见一次的惊喜...
     </span>
-    <span class="at" v-show="comment.at !== undefined && comment.at !== null">
+    <span class="at" v-show="comment.at">
       @{{comment.at}}
       <span class="close" @click="cancelReply">
         <i class="el-icon-close"></i>
@@ -81,13 +81,16 @@
             this.comment.blogId = this.blogId
             this.$emit('submit', this.comment)
             this.comment = {}
+
+            const flag = document.querySelector('span.flag')
+            flag.className = 'flag'
           } else {
             return false
           }
         })
       },
       cancelReply() {
-        this.comment.at = null
+        this.$set(this.comment, 'at', null)
         this.comment.parentId = null
       }
     },

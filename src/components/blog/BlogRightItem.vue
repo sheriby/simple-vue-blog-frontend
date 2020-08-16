@@ -36,7 +36,8 @@
         </div>
       </el-col>
       <el-col :span="13" class="cover">
-        <img :src="cover" />
+        <img :src="cover" class="pic"  onerror="this.style.display='none'"/>
+        <img src="../../assets/img/orange.progress-bar-stripe-loader.svg" class="loading" />
       </el-col>
     </el-row>
   </div>
@@ -111,7 +112,7 @@ export default {
 .blog-item:hover {
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
 
-  img {
+  img.pic {
     transition: all 0.5s ease-in;
     transform: scale(1.1);
   }
@@ -215,5 +216,13 @@ div.more {
 div.tagtype span:hover {
   color: #fe9600;
   cursor: pointer;
+}
+
+img.loading {
+  width: 100%;
+}
+
+img.pic {
+  width: 100%;
 }
 </style>

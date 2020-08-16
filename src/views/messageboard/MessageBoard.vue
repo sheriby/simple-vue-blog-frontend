@@ -37,14 +37,14 @@
     },
     methods: {
       reply(data) {
-        console.log(data)
         const form = document.querySelector('div.form')
         form.scrollIntoView({
           block: 'center',
           behavior: 'smooth'
         })
 
-        this.$refs.form.comment.at = data.name
+        // this.$refs.form.comment.at = data.name
+        this.$set(this.$refs.form.comment, 'at', data.name)
         this.$refs.form.comment.parentId = data.id
       },
       refreshMessage() {

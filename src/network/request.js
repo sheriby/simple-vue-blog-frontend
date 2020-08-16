@@ -1,6 +1,4 @@
 import Axios from 'axios'
-Axios.defaults.headers.post['contetn-type'] =
-  'application/x-www-form-urlencoded'
 
 export function request(config) {
   const instance = Axios.create({
