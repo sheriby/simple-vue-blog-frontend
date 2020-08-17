@@ -7,6 +7,9 @@ const Category = () => import('@/views/category/Category')
 const Tag = () => import('@/views/tag/Tag')
 const MessageBoard = () => import('@/views/messageboard/MessageBoard')
 const Archive = () => import('@/views/archive/Archive')
+const Link = () => import('@/views/link/Link')
+const Donate = () => import('@/views/donate/Donate')
+const About = () => import('@/views/about/About')
 
 Vue.use(VueRouter)
 
@@ -19,6 +22,9 @@ const routes = [
   { path: '/tag/:id', component: Tag },
   { path: '/messageboard', component: MessageBoard },
   { path: '/archive', component: Archive },
+  { path: '/link', component: Link },
+  { path: '/donate', component: Donate },
+  { path: '/about', component: About }
 ]
 
 const router = new VueRouter({

@@ -4,7 +4,7 @@
       <el-col :span="5" class="name-col">
         <span class="prefix">Hony</span>
         <span class="name">Sher</span>
-        <span>的小博客</span>
+        <span><span class="no">の</span>小博客</span>
       </el-col>
       <el-col :span="14" class="nav-col">
         <el-menu
@@ -19,17 +19,24 @@
             ><i class="el-icon-s-home"></i>
             <span class="title">首页</span>
           </el-menu-item>
-          <el-submenu index="/archive">
-            <template slot="title" class="title"
-              ><i class="el-icon-s-management"></i>
-              <span class="title" @click="toArchive">归档</span>
-            </template>
-            <el-menu-item index="/type/1">技术</el-menu-item>
-            <el-menu-item index="/type/2">生活</el-menu-item>
-            <el-menu-item index="/type/3">资源</el-menu-item>
-            <el-menu-item index="/type/4">随想</el-menu-item>
-            <el-menu-item index="/type/5">转载</el-menu-item>
-          </el-submenu>
+          <el-menu-item index="/archive">
+            <el-dropdown placement="bottom" @command="toType">
+              <div>
+                <i class="el-icon-s-management"></i>
+                <span class="title">归档</span>
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="(type, index) in types"
+                  :key="index"
+                  :icon="typeIcons[index % 5]"
+                  :command="type.id"
+                >
+                  {{ type.name }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-menu-item>
           <el-menu-item index="/tag">
             <i class="el-icon-menu"></i>
             <span class="title">标签</span>
@@ -38,15 +45,15 @@
             ><i class="el-icon-s-comment"></i>
             <span class="title">留言板</span>
           </el-menu-item>
-          <el-menu-item index="5"
+          <el-menu-item index="/link"
             ><i class="el-icon-s-custom"></i>
             <span class="title">友人帐</span>
           </el-menu-item>
-          <el-menu-item index="6"
+          <el-menu-item index="/donate"
             ><i class="el-icon-s-goods"></i>
             <span class="title">赞赏</span>
           </el-menu-item>
-          <el-menu-item index="7"
+          <el-menu-item index="/about"
             ><i class="el-icon-info"></i>
             <span class="title">关于</span>
           </el-menu-item>
@@ -109,7 +116,8 @@
 
 <script>
 import SearchItem from '@/components/navbar/SearchItem'
-import {searchInfo} from '@/network/blog'
+import { searchInfo } from '@/network/blog'
+import { getTypes } from '../../network/type'
 
 export default {
   name: 'NavBar',
@@ -124,7 +132,15 @@ export default {
       alwaysShow: false,
       timeId: -1,
       showSearch: false,
-      searchDatas: {}
+      searchDatas: {},
+      types: [],
+      typeIcons: [
+        'el-icon-document',
+        'el-icon-reading',
+        'el-icon-folder',
+        'el-icon-tickets',
+        'el-icon-monitor'
+      ]
     }
   },
   methods: {
@@ -147,8 +163,11 @@ export default {
     toArchive() {
       this.$router.push('/archive')
     },
+    toType(id) {
+      this.$router.push('/type/' + id)
+    },
     handleInput() {
-      if (this.timeId != -1) {
+      if (this.timeId !== -1) {
         clearTimeout(this.timeId)
       }
       this.timeId = setTimeout(() => {
@@ -168,82 +187,15 @@ export default {
     }
   },
   created() {
-    console.log('xxx', this.$route.path)
-    this.alwaysShow = !this.$route.path.includes('/index')
-  },
-  mounted() {
-    const titles = document.getElementsByClassName('el-submenu__title')
-    for (let title of titles) {
-      title.style.padding = '0 5px'
-    }
-
-    //TODO fix this problem after project fininshed
-    if (!this.alwaysShow) {
-      const navbar = document.getElementsByClassName('nav-bar')[0]
-      const navcol = document.getElementsByClassName('nav-col')[0]
-      navbar.style.background = 'rgba(0, 0, 0, 0.05)'
-      navcol.style.visibility = 'hidden'
-      navcol.style.transform = 'translateX(100px)'
-
-      let itemhover = false
-
-      const over = () => {
-        if (!this.show) {
-          navcol.style.visibility = 'visible'
-          navbar.style.background = 'rgba(255, 255, 255, 0.9)'
-          navcol.style.transform = 'translateX(0)'
-          this.show = true
-        }
-        return false
-      }
-
-      const out = () => {
-        if (
-          !itemhover &&
-          this.show &&
-          document.documentElement.scrollTop === 0
-        ) {
-          navcol.style.visibility = 'hidden'
-          navcol.style.transform = 'translateX(100px)'
-          navbar.style.background = 'rgba(0, 0, 0, 0.05)'
-          this.show = false
-        }
-        return false
-      }
-
-      navbar.onmouseenter = over
-      navbar.onmouseleave = () => {
-        setTimeout(out, 300)
-      }
-
-      const navitems = document.querySelectorAll('div.el-menu--horizontal')
-      for (let navitem of navitems) {
-        navitem.onmouseenter = () => {
-          itemhover = true
-        }
-        navitem.onmouseleave = () => {
-          itemhover = false
-          setTimeout(out, 300)
-        }
-      }
-
-      let timer = null
-
-      window.addEventListener('scroll', () => {
-        if (timer) {
-          clearInterval(timer)
-        }
-        timer = setTimeout(() => {
-          const h = document.documentElement.scrollTop
-          if (h === 0 && this.show) {
-            out()
-          } else if (!this.show) {
-            over()
-          }
-        }, 100)
+    getTypes()
+      .then(res => {
+        this.types = res.data
       })
-    }
-  }
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  mounted() {}
 }
 </script>
 
@@ -260,6 +212,15 @@ export default {
   color: #555555;
 }
 
+@keyframes infinite-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .el-menu-item,
 .el-submenu {
   padding: 0 7px;
@@ -274,6 +235,13 @@ export default {
   span {
     color: orange;
   }
+
+  span.no {
+    display: inline-block;
+    color: skyblue;
+    animation: 3s linear infinite-rotate infinite;
+  }
+
 }
 
 .name-col {
@@ -283,7 +251,7 @@ export default {
 }
 
 .name-col span {
-  padding: 3px;
+  padding: 2.5px;
   color: #444444;
 }
 

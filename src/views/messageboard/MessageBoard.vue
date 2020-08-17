@@ -67,12 +67,13 @@
 <style lang="less" scoped>
 
   h2.header {
-    font-size: 50px;
+    font-size: 45px;
     color: #ffffff;
     text-shadow: rgba(0, 0, 0) 2px 2px 10px;
     letter-spacing: 7px;
     text-align: center;
     padding-top: 200px;
+    font-weight: 300;
   }
 
   div.container {

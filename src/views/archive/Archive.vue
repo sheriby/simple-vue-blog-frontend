@@ -63,11 +63,12 @@
 
 <style lang="less" scoped>
 
-  div.title {
+  div.title h2 {
     text-align: center;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 45px;
     text-shadow: rgba(0, 0, 0) 2px 2px 10px;
+    font-weight: 300;
 
     padding-top: 150px;
   }

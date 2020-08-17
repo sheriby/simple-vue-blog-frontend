@@ -2,7 +2,7 @@
   <div class="comment-item">
     <div class="user-info">
       <div class="avatar">
-        <img :src="avatarSrc">
+        <img v-lazy="avatarSrc">
       </div>
       <div class="info">
         <div class="name">{{comment.name}}</div>

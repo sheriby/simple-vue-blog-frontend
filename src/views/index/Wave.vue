@@ -37,15 +37,15 @@
 
       position()
 
-      let timer = null
+      // let timer = null
 
       window.addEventListener('resize', () => {
-        if (timer) {
-          clearInterval(timer)
-        }
-        timer = setTimeout(() => {
+        // if (timer) {
+          // clearInterval(timer)
+        // }
+        // timer = setTimeout(() => {
           position()
-        }, 300)
+        // }, 10)
       })
     }
   }

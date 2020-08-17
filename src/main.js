@@ -17,6 +17,9 @@ document.addEventListener('input', POWERMODE)
 import Highlight from '@/utils/highlight'
 Vue.use(Highlight)
 
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload)
+
 new Vue({
   render: h => h(App),
   router

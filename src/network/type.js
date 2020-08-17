@@ -5,3 +5,9 @@ export function getTypeInfo(id, page) {
     url: '/type/' + id + '/' + page
   })
 }
+
+export function getTypes() {
+  return request({
+    url: '/type'
+  })
+}

@@ -17,9 +17,6 @@ export default {
   components: {
     ScrollLine,
     NavBar,
-  },
-  updated() {
-    this.$refs['navbar'].alwaysShow = !this.$route.path.includes('/index')
   }
 };
 </script>

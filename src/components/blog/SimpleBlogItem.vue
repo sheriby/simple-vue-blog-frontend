@@ -3,7 +3,7 @@
     <div class="container" @click="toBlog">
       <el-row>
         <el-col :span="4">
-          <img :src="blog.cover">
+          <img v-lazy="blog.cover">
         </el-col>
         <el-col :span="16">
           <h3 class="title">{{blog.title}}</h3>

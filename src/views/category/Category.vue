@@ -89,8 +89,9 @@
     text-shadow: rgba(0, 0, 0) 2px 2px 10px;
 
     h2 {
-      font-size: 50px;
+      font-size: 45px;
       letter-spacing: 8px;
+      font-weight: 300;
     }
 
     .desc {

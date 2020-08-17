@@ -2,7 +2,7 @@
   <div class="blog-item" @click="blogdetail">
     <el-row>
       <el-col :span="13" class="cover">
-        <img :src="cover" class="pic" onerror="this.style.display='none'" />
+        <img v-lazy="cover" class="pic" onerror="this.style.display='none'" />
         <img src="../../assets/img/orange.progress-bar-stripe-loader.svg" class="loading" />
       </el-col>
       <el-col :span="11" class="desc">

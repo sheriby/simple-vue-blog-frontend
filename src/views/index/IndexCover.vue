@@ -16,18 +16,18 @@
       }
     },
     mounted: function () {
-      let timer= null
+      // let timer= null
       const h = document.documentElement.clientHeight
       this.coverStyle.height = h + 'px'
 
       window.addEventListener('resize', () => {
-        if (timer) {
-          clearInterval(timer)
-        }
-        timer = setTimeout(() => {
+        // if (timer) {
+        //   clearInterval(timer)
+        // }
+        // timer = setTimeout(() => {
           const h = document.documentElement.clientHeight
           this.coverStyle.height = h + 'px'
-        }, 100)
+        // }, 10)
       })
     }
   }
