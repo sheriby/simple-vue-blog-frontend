@@ -18,7 +18,8 @@ http://zenorocha.mit-license.org
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: rgb(33, 37, 43);
+  /* background: rgb(33, 37, 43); */
+  background: #1d1f21;
 }
 
 .hljs-keyword,

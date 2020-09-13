@@ -41,7 +41,7 @@
 
   div.desc {
     padding-top: 250px;
-    padding-left: 200px;
+    padding-left: 15%;
 
     text-shadow: rgba(0, 0, 0) 2px 2px 10px;
     color: #ffffff;

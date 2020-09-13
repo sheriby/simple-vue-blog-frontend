@@ -26,9 +26,22 @@ export default {
       html: ''
     }
   },
+  methods: {
+    initLang() {
+      document.querySelectorAll('pre code').forEach(block => {
+        const lang = block.classList[0]
+        if (lang !== null && lang.startsWith('language-')) {
+          block.setAttribute('data-lang', lang.split('-')[1].toUpperCase())
+        } else {
+          block.setAttribute('data-lang', 'TEXT')
+        }
+      })
+    }
+  },
   mounted() {
     window.hljs.initHighlightingOnLoad();
     window.hljs.initLineNumbersOnLoad();
+    window.addEventListener('load', this.initLang)
 
     tocbot.init({
       tocSelector: 'div.toc',
@@ -65,6 +78,8 @@ export default {
       contentSelector: 'div.content',
       headingSelector: 'h1, h2, h3, h4, h5, h6'
     })
+
+    this.initLang()
   }
 }
 </script>
@@ -98,12 +113,26 @@ div.content {
     background: rgba(254, 250, 199, 0.8);
   }
 
-  & /deep/ code[class*='language-'] {
+  // & /deep/ code[class*='language-'] {
+  & /deep/ code.hljs {
     // margin: 25px 0;
     width: 100%;
 
     // box-shadow: rgba(0, 0, 0, 0.4) 0 10px 30px 0;
     // border-radius: 5px;
+
+    &::before {
+      content: attr(data-lang);
+      color: #fff;
+      position: absolute;
+      left: 0;
+      margin-top: -30px;
+      width: 83%;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-align: center;
+      z-index: 2;
+    }
   }
 
   & /deep/ h2 {
@@ -156,6 +185,41 @@ div.content {
 
   & /deep/ .hljs-ln-line:hover {
     background: #333333;
+  }
+
+  & /deep/ ul, & /deep/ ol {
+    border: rgba(0, 0, 0, 0.1) 1px solid;
+    border-radius: 10px;
+    padding: 20px 40px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    li {
+      margin: 5px 0;
+    }
+  }
+
+  & /deep/ blockquote {
+    padding-left: 30px;
+    border-left: 5px #fe9600 solid;
+  }
+
+  & /deep/ pre {
+    border-top: 25px #21252b solid;
+    // position: relative;
+  }
+
+  & /deep/ pre::before {
+    content: " ";
+    position: absolute;
+    background: #fc625d;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+    margin-left: 12px;
+    margin-top: -18px;
+    z-index: 2;
   }
 }
 

@@ -77,8 +77,10 @@
   }
 
   div.container {
-    padding-left: 200px;
-    padding-right: 100px;
+    // padding-left: 200px;
+    // padding-right: 100px;
+    max-width: 80%;
+    margin-left: 15%;
   }
 
 </style>
