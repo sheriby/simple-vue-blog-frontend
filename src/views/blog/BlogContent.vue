@@ -15,6 +15,7 @@
 import tocbot from 'tocbot'
 import 'tocbot/dist/tocbot.css'
 import { highlightBlock } from 'highlight.js'
+import clipboard from 'clipboard'
 
 export default {
   name: 'BlogContent',
@@ -27,6 +28,7 @@ export default {
     }
   },
   methods: {
+    // init the code block wrapper title such as JAVA/CSS and so on
     initLang() {
       document.querySelectorAll('pre code').forEach(block => {
         const lang = block.classList[0]
@@ -36,13 +38,70 @@ export default {
           block.setAttribute('data-lang', 'TEXT')
         }
       })
+
+      document.querySelectorAll('pre').forEach(pre => {
+        // const height = pre.offsetHeight + 2
+        // pre.style.height = height + 'px'
+        pre.onclick = event => {
+          const target = event.target
+          if (target.tagName === 'CODE') {
+            if (target.parentNode.className === '') {
+              target.parentNode.className = 'full-screen'
+              document.body.style.overflow='hidden'
+              pre.style.width = ''
+              pre.style.height = ''
+            } else {
+              target.parentNode.className = ''
+              document.body.style.overflow = 'auto'
+              // pre.style.width = width + 'px'
+              // pre.style.height = height + 'px'
+            }
+          }
+          return false
+
+        }
+        if (!pre.querySelector('a.copy')) {
+          const a = document.createElement('a')
+          const i = document.createElement('i')
+          i.className = 'el-icon-document'
+          a.appendChild(i)
+          a.className = 'copy'
+          pre.appendChild(a)
+        }
+      })
+
+      const clip = new clipboard('pre a.copy', {
+        text(trigger) {
+          const res = trigger.parentNode.innerText.
+            replace(/\n\n/g, '\n').replace(/\n\t/g, '\n').
+            replace(/^\t/, '')
+
+          return res 
+        }
+      })
+
+      clip.on('success', () => {
+        this.$message({
+          message: '复制成功',
+          type: 'success'
+        })
+      })
+
+      clip.on('error', () => {
+        this.$message.error('复制失败')
+      })
     }
   },
   mounted() {
+    // highlight your code
     window.hljs.initHighlightingOnLoad();
+    // highlight number
+    // NOTICE:
+    // in App.vue => window.hljs = hljs
     window.hljs.initLineNumbersOnLoad();
-    window.addEventListener('load', this.initLang)
+    // init code block wrapper tille after highlight.js has loaded
 
+    // generate the index of the blog
     tocbot.init({
       tocSelector: 'div.toc',
       contentSelector: 'div.content',
@@ -66,12 +125,15 @@ export default {
         }
       }, 10)
     })
+
   },
   updated() {
+    // rerender the hljs and tocbot
     document.querySelectorAll('pre code').forEach(block => {
       window.hljs.highlightBlock(block)
       window.hljs.lineNumbersBlock(block)
     })
+
 
     tocbot.init({
       tocSelector: 'div.toc',
@@ -79,7 +141,7 @@ export default {
       headingSelector: 'h1, h2, h3, h4, h5, h6'
     })
 
-    this.initLang()
+    this.initLang() 
   }
 }
 </script>
@@ -107,16 +169,21 @@ div.content {
     font-weight: 300;
   }
 
+  & /deep/ table.hljs-ln {
+    width: 100%;
+  }
+
   & /deep/ code:not([class]) {
     display: inline-block;
     color: #e67474;
     background: rgba(254, 250, 199, 0.8);
   }
 
-  // & /deep/ code[class*='language-'] {
+  & /deep/ code[class*='language-'], 
   & /deep/ code.hljs {
     // margin: 25px 0;
     width: 100%;
+    border-radius: 8px;
 
     // box-shadow: rgba(0, 0, 0, 0.4) 0 10px 30px 0;
     // border-radius: 5px;
@@ -127,11 +194,12 @@ div.content {
       position: absolute;
       left: 0;
       margin-top: -30px;
-      width: 83%;
+      width: 100%;
       font-weight: 900;
       letter-spacing: 1px;
       text-align: center;
       z-index: 2;
+      cursor: pointer;
     }
   }
 
@@ -172,15 +240,21 @@ div.content {
   }
 
   & /deep/ .hljs-ln-n:not(.hljs-ln-line) {
-    text-align: left;
-    padding-right: 12px !important;
+    padding-left: 0px !important;
     color: #888f96;
+    text-align: right;
+    width: 15px !important;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+  }
+
+  & /deep/ .hljs-ln-line.hljs-ln-numbers {
+    width: 15px !important;
+    padding-right: 10px !important;
   }
 
   & /deep/ .hljs-ln-line:hover {
@@ -204,9 +278,70 @@ div.content {
     border-left: 5px #fe9600 solid;
   }
 
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      -webkit-transform: scale3d(0.2, 0.2, 0.2);
+      transform: scale3d(0.2, 0.2, 0.2);
+    }
+
+    40% {
+      opacity: 1;
+    }
+
+    70% {
+      -webkit-transform: scale3d(1.0, 1.0, 1.0);
+      transform: scale3d(1.0, 1.0, 1.0);
+    }
+
+    80% {
+      -webkit-transform: scale3d(0.97, 0.97, 0.97);
+      transform: scale3d(0.97, 0.97, 0.97);
+    }
+
+  }
+
+
   & /deep/ pre {
     border-top: 25px #21252b solid;
-    // position: relative;
+    position: relative;
+    overflow: visible;
+
+    // transition: height 0.3s ease-in-out;
+    &.full-screen {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      border-radius: 0;
+      margin: 0;
+      animation: zoomIn .5s linear;
+
+      &::before {
+        position: fixed;
+      }
+
+      code::before {
+        position: fixed;
+        width: 100%;
+      }
+    }
+
+    a {
+      color: #ffffff;
+      font-size: 18px;
+      position: absolute;
+      right: 15px;
+      top: -25px;
+      z-index: 4;
+
+      &:hover {
+        cursor: pointer;
+        color: #fe9600;
+      }
+    }
   }
 
   & /deep/ pre::before {
@@ -219,7 +354,7 @@ div.content {
     box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
     margin-left: 12px;
     margin-top: -18px;
-    z-index: 2;
+    z-index: 3;
   }
 }
 
