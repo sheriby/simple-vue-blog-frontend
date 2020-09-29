@@ -47,7 +47,7 @@ export default {
           if (target.tagName === 'CODE') {
             if (target.parentNode.className === '') {
               target.parentNode.className = 'full-screen'
-              document.body.style.overflow='hidden'
+              document.body.style.overflow = 'hidden'
               pre.style.width = ''
               pre.style.height = ''
             } else {
@@ -58,7 +58,6 @@ export default {
             }
           }
           return false
-
         }
         if (!pre.querySelector('a.copy')) {
           const a = document.createElement('a')
@@ -72,11 +71,12 @@ export default {
 
       const clip = new clipboard('pre a.copy', {
         text(trigger) {
-          const res = trigger.parentNode.innerText.
-            replace(/\n\n/g, '\n').replace(/\n\t/g, '\n').
-            replace(/^\t/, '')
+          const res = trigger.parentNode.innerText
+            .replace(/\n\n/g, '\n')
+            .replace(/\n\t/g, '\n')
+            .replace(/^\t/, '')
 
-          return res 
+          return res
         }
       })
 
@@ -94,11 +94,11 @@ export default {
   },
   mounted() {
     // highlight your code
-    window.hljs.initHighlightingOnLoad();
+    window.hljs.initHighlightingOnLoad()
     // highlight number
     // NOTICE:
     // in App.vue => window.hljs = hljs
-    window.hljs.initLineNumbersOnLoad();
+    window.hljs.initLineNumbersOnLoad()
     // init code block wrapper tille after highlight.js has loaded
 
     // generate the index of the blog
@@ -125,7 +125,6 @@ export default {
         }
       }, 10)
     })
-
   },
   updated() {
     // rerender the hljs and tocbot
@@ -134,14 +133,13 @@ export default {
       window.hljs.lineNumbersBlock(block)
     })
 
-
     tocbot.init({
       tocSelector: 'div.toc',
       contentSelector: 'div.content',
       headingSelector: 'h1, h2, h3, h4, h5, h6'
     })
 
-    this.initLang() 
+    this.initLang()
   }
 }
 </script>
@@ -179,7 +177,7 @@ div.content {
     background: rgba(254, 250, 199, 0.8);
   }
 
-  & /deep/ code[class*='language-'], 
+  & /deep/ code[class*='language-'],
   & /deep/ code.hljs {
     // margin: 25px 0;
     width: 100%;
@@ -230,13 +228,12 @@ div.content {
   }
 
   & /deep/ h4::before {
-    content: '##';
+    content: '▌';
     margin: 15px 0;
     color: #ff6d6d;
-    font-weight: bolder;
-    size: 14px;
     display: inline-block;
     padding-right: 5px;
+    padding-left: 3px;
   }
 
   & /deep/ .hljs-ln-n:not(.hljs-ln-line) {
@@ -261,7 +258,8 @@ div.content {
     background: #333333;
   }
 
-  & /deep/ ul, & /deep/ ol {
+  & /deep/ ul,
+  & /deep/ ol {
     border: rgba(0, 0, 0, 0.1) 1px solid;
     border-radius: 10px;
     padding: 20px 40px;
@@ -290,17 +288,15 @@ div.content {
     }
 
     70% {
-      -webkit-transform: scale3d(1.0, 1.0, 1.0);
-      transform: scale3d(1.0, 1.0, 1.0);
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
     }
 
     80% {
       -webkit-transform: scale3d(0.97, 0.97, 0.97);
       transform: scale3d(0.97, 0.97, 0.97);
     }
-
   }
-
 
   & /deep/ pre {
     border-top: 25px #21252b solid;
@@ -317,7 +313,7 @@ div.content {
       z-index: 10;
       border-radius: 0;
       margin: 0;
-      animation: zoomIn .5s linear;
+      animation: zoomIn 0.5s linear;
 
       &::before {
         position: fixed;
@@ -345,7 +341,7 @@ div.content {
   }
 
   & /deep/ pre::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     background: #fc625d;
     width: 12px;

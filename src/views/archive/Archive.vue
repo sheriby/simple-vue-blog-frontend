@@ -41,7 +41,6 @@
     created() {
       getArchive().then(res => {
         this.archive = res.data
-        console.log(this.archive)
       }).catch(err => {
         console.log(err)
       })

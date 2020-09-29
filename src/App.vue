@@ -17,6 +17,20 @@ export default {
   components: {
     ScrollLine,
     NavBar,
+  },
+  computed: {
+    path() {
+      return this.$route.path
+    }
+  },
+  watch: {
+    path(val) {
+      if (val.indexOf('/index') !== -1) {
+        this.$refs.navbar.disappearPage()
+      } else {
+        this.$refs.navbar.undisappearPage()
+      }
+    }
   }
 };
 </script>

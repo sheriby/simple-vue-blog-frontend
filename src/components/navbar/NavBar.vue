@@ -12,7 +12,6 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
           :router="true"
         >
           <el-menu-item index="/index"
@@ -117,7 +116,8 @@
 <script>
 import SearchItem from '@/components/navbar/SearchItem'
 import { searchInfo } from '@/network/blog'
-import { getTypes } from '../../network/type'
+import { getTypes } from '@/network/type'
+import {addClass, removeClass} from '@/utils/classutils'
 
 export default {
   name: 'NavBar',
@@ -128,8 +128,6 @@ export default {
     return {
       activeIndex: '1',
       searchtext: '',
-      show: false,
-      alwaysShow: false,
       timeId: -1,
       showSearch: false,
       searchDatas: {},
@@ -140,13 +138,13 @@ export default {
         'el-icon-folder',
         'el-icon-tickets',
         'el-icon-monitor'
-      ]
+      ],
+      disappear: false,
+      disappearTimer: null,
+      isDisappearPage: false
     }
   },
   methods: {
-    handleSelect(key) {
-      this.alwaysShow = key !== '/index'
-    },
     search() {
       const searchinput = document.querySelector('div.search-input')
       searchinput.style.visibility = 'visible'
@@ -184,6 +182,73 @@ export default {
       const { type, id } = data
       this.close()
       this.$router.push('/' + type + '/' + id)
+    },
+    addDisappear() {
+      if (!this.isDisappearPage || this.disappear ||
+            document.documentElement.scrollTop !== 0) {
+        return
+      }
+      // add class 'disappear'
+      const _this = this
+      this.disappearTimer = setTimeout(function() {
+        const navBar = document.querySelector('.nav-bar')
+        addClass(navBar, 'disappear')
+        _this.disappear = true
+      }, 300)
+    },
+    removeDisappear() {
+      if (this.disappearTimer) {
+        clearInterval(this.disappearTimer)
+      }
+      if (!this.disappear) {
+        return
+      }
+      // remove class 'disappear'
+      const navBar = document.querySelector('.nav-bar')
+      removeClass(navBar, 'disappear')
+      this.disappear = false
+    },
+    scrollDisappear() {
+      this.removeDisappear()
+      if (document.documentElement.scrollTop === 0) {
+        this.addDisappear()
+      }
+    },
+    disappearListener() {
+      const navBar = document.querySelector('.nav-bar')
+      navBar.addEventListener('mouseenter', this.removeDisappear)
+      navBar.addEventListener('mouseleave', this.addDisappear)
+
+      const popper = document.querySelector('.el-popper')
+      popper.addEventListener('mouseenter', this.removeDisappear)
+      popper.addEventListener('mouseleave', this.addDisappear)
+
+      window.addEventListener('scroll', this.scrollDisappear)
+    },
+    removeDisappearListener() {
+      const navBar = document.querySelector('.nav-bar')
+      navBar.removeEventListener('mouseenter', this.removeDisappear)
+      navBar.removeEventListener('mouseleave', this.addDisappear)
+
+      const popper = document.querySelector('.el-popper')
+      popper.addEventListener('mouseenter', this.removeDisappear)
+      popper.addEventListener('mouseleave', this.addDisappear)
+
+      window.removeEventListener('scroll', this.scrollDisappear)
+    },
+    disappearPage() {
+      if (!this.isDisappearPage) {
+        this.isDisappearPage = true
+        this.disappearListener()
+        this.addDisappear()
+      }
+    },
+    undisappearPage() {
+      if (this.isDisappearPage) {
+        this.isDisappearPage = false
+        this.removeDisappearListener()
+        this.removeDisappear()
+      }
     }
   },
   created() {
@@ -195,7 +260,9 @@ export default {
         console.log(err)
       })
   },
-  mounted() {}
+  mounted() {
+
+  }
 }
 </script>
 
@@ -269,6 +336,15 @@ export default {
   width: 100%;
 
   transition: all 0.5s ease-in-out;
+
+  &.disappear {
+    background: rgba(0, 0, 0, 0.05);
+
+    .nav-col {
+      visibility: hidden;
+      transform: translateX(80px);
+    }
+  }
 }
 
 .el-menu {
